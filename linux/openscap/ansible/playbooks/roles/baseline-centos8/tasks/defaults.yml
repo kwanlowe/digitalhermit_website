@@ -1,0 +1,12 @@
+- name: "Gather OS specific variables"
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution }}-{{ ansible_distribution_major_version}}.cfg"
+  tags: os_vars
+
+- name: "Gather playbook specific variables"
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "playbook.cfg"
+  tags: environment_vars
+
