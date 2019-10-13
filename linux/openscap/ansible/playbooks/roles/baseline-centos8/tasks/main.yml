@@ -1,0 +1,15 @@
+- name: "Get defaults"
+  include: defaults.yml
+
+- name: "Get platform information"
+  include: get_platform.yml
+
+- name: "Install base packages"
+  include: base_packages.yml
+
+- name: "Add default users"
+  include: users.yml
+
+- name: "Configure SSH server"
+  include: configure_ssh.yml
+

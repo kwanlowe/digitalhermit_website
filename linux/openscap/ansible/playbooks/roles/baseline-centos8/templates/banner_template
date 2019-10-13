@@ -1,0 +1,13 @@
++----------------------------------------------------+
+|   Digital Hermit Research Laboratories (DHRL)      |
++----------------------------------------------------+
+|  Unauthorized access to this system is prohibited. |
+| DHRL reserves the right to monitor the use of this |
+| system as required to ensure its stability,        |
+| availability and security.                         |
++----------------------------------------------------+
+ Hostname   : {{ ansible_hostname }}
+ IP Address : {{ ansible_default_ipv4.address }}
+ Application: {{ appcode }}
+
+

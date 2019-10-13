@@ -1,0 +1,6 @@
+---
+# tasks file for openscap-scanner
+
+- name: "Add software"
+  include: packages.yml
+  tags: openscap-scanner_packages

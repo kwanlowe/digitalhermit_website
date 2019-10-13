@@ -1,0 +1,15 @@
+- set_fact:
+    scap_packages:
+     - openscap-scanner
+     - scap-security-guide
+     - openscap-utils
+     - scap-workbench
+ 
+- name: "Install dependencies"
+  yum:
+    name: "{{ scap_packages }}"
+    state: present
+  become: true
+  when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") 
+
+

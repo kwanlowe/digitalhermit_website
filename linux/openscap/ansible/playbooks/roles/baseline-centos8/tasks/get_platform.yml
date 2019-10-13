@@ -1,0 +1,22 @@
+- name: "Check if running on AWS"
+  shell: >
+    if [ -f /sys/hypervisor/uuid ] && [ `head -c 3 /sys/hypervisor/uuid` == ec2 ]; then
+      echo yes
+    else
+      echo no
+    fi
+  args:
+    executable: /bin/bash
+  register: isEc2
+  changed_when: false
+
+
+- name: "Check if running on GCE"
+  shell: >
+    if [[ $(/sbin/dmidecode -s bios-vendor) -eq "Google" ]]; then echo yes; else echo no; fi
+  become: true
+  args:
+    executable: /bin/bash
+  register: isGCE
+  changed_when: false
+

@@ -1,0 +1,8 @@
+- name: "Add /etc/hosts entry"
+  lineinfile:
+    dest: /etc/hosts
+    line: "{{ item }}"
+  with_items: "{{ hostentries }}"
+  become: true
+  when: (isEc2.stdout == "no" ) and (isGCE.stdout == "no")
+

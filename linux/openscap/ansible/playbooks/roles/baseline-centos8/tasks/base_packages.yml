@@ -1,0 +1,28 @@
+- name: "Install epel"
+  yum: name=epel-release state=present 
+  become: true
+
+#- name: Wait for yum to become available
+#  wait_for:
+#    path: /var/cache/yum
+#    timeout: 30
+#    delay: 10
+
+
+- set_fact:
+    base_packages:
+     - git
+     - screen
+     - vim
+     - python-virtualenv
+     - openssl-devel
+     - ncurses-term
+ 
+- name: "Install dependencies"
+  yum:
+    name: "{{ base_packages }}"
+    state: present
+  become: true
+  when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") 
+
+

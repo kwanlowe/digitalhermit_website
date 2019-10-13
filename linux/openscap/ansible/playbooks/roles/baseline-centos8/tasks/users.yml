@@ -1,0 +1,6 @@
+- name: "Create admin user"
+  user:
+    name: deploy
+    comment: "Deploy User"
+  become: true
+

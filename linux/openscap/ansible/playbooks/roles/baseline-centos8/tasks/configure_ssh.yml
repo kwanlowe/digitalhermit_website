@@ -1,0 +1,28 @@
+- name: "Copy DHRL Banner"
+  template:
+    src: "banner_template"
+    dest: "/etc/ssh/banner"
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+
+- name: "Point /etc/issue to /etc/ssh/banner"
+  file:
+    src: /etc/ssh/banner
+    dest: "{{ item }}"
+    state: link
+    force: yes
+  with_items:
+    - /etc/issue.net
+    - /etc/issue
+    - /etc/motd
+  become: true
+
+- name: "Set SSH Banner"
+  lineinfile: 
+    dest: /etc/ssh/sshd_config 
+    regexp: "^Banner" 
+    line: "Banner /etc/ssh/banner" 
+    state: present
+  become: true
