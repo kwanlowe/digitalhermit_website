@@ -17,3 +17,5 @@ push:
 	    --rsync-path="mkdir -p $(docpath)/$(component)/$(subcomponent) && rsync" \
 	    $(username)@$(webhost):$(docpath)/$(component)/$(subcomponent)
 
+install-chromedriver:
+	./install_chromedriver
