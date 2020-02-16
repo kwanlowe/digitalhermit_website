@@ -23,10 +23,15 @@ render:
 	mkdir -p $(CURDIR)/$(REPORT_DIR)/images
 	java -jar bin/plantuml.jar uml/*.pu -o $(CURDIR)/$(REPORT_DIR)/images/
 
+render-svg:
+	mkdir -p $(CURDIR)/$(REPORT_DIR)/images
+	java -jar bin/plantuml.jar -tsvg uml/*.pu -o $(CURDIR)/$(REPORT_DIR)/images/
+
+
 gallery:
 	mkdir -p $(REPORT_DIR)
 	rm -f ./tmp/image_list
-	$(eval IMAGES=$(shell sh -c "ls $(CURDIR)/$(REPORT_DIR)/images/*.png| sed 's/.*\///'"))
+	$(eval IMAGES=$(shell sh -c "ls $(CURDIR)/$(REPORT_DIR)/images/*.{png,svg}| sed 's/.*\///'"))
 	$(foreach var,$(IMAGES), \
 		m4 -DIMAGENAME=$(var) \
 		   -DIMAGETAG=$(var) \
