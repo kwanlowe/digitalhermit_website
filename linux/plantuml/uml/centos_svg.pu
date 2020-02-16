@@ -1,0 +1,100 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/ebbypeter/Archimate-PlantUML/master/Archimate.puml
+' skinparam linetype ortho
+skinparam linecolor white
+skinparam handwritten true
+skinparam arrowcolor yellow
+
+top to bottom direction
+
+title The Package Landscape
+
+'Elements'
+
+rectangle PythonPackage {
+      artifact ["SymPy 1.2"] as Python_SymPy
+}
+rectangle OctaveForge {
+      artifact ["Symbolic"] as Forge_Symbolic
+}
+
+
+
+together {
+    rectangle SNAPStore {
+      artifact ["GNU Octave 5.1.0 Snap"] as SNAP_Octave
+    }
+
+    rectangle Flathub {
+      artifact ["GNU Octave 5.2.0 Flatpak"] as Flatpak_Octave
+    }
+}
+
+together {
+    top to bottom direction
+    rectangle ["Github Source"] as Source_Build #CornFlowerBlue
+    rectangle ["Java 11 jar"] as Java_11_Jar #CornFlowerBlue
+    rectangle ["Java 8 jar"] as Java_8_Jar #CornFlowerBlue
+    rectangle ["OpenJDK 8 jar"] as OpenJDK_8_Jar #CornFlowerBlue
+}
+
+together {
+    top to bottom direction
+    rectangle ["CentOS 8 Repo"] as Centos_Repo #CornFlowerBlue
+    rectangle ["CentOS 8 Extras"] as Centos_Extras #CornFlowerBlue
+    rectangle ["CentOS 8 Plus"] as Centos_Plus #CornFlowerBlue
+    rectangle ["CentOS 8 SCL"] as Centos_SCL #CornFlowerBlue
+    rectangle ["EPEL 8 Repo"] as EPEL_Repo #CornFlowerBlue
+}
+
+
+together {
+    rectangle ["Ubuntu Main"] as Ubuntu18_Main #CornFlowerBlue
+    rectangle ["Ubuntu Universe"] as Ubuntu18_Universe #CornFlowerBlue
+    rectangle ["Ubuntu Restricted"] as Ubuntu18_Restricted #CornFlowerBlue
+    rectangle ["Ubuntu Multiverse"] as Ubuntu18_Multiverse #CornFlowerBlue
+    rectangle ["Ubuntu PPA"] as Ubuntu18_PPA #CornFlowerBlue
+}
+
+node ["Centos 8 Laptop"] as Laptop_Centos #DarkTurquoise
+node ["Ubuntu 18.04 Laptop"] as Laptop_Ubuntu #DarkTurquoise
+
+
+
+'Relationships'
+
+together {
+    Rel_Access_Up(Laptop_Centos, Centos_Repo, "DNF Install") #yellow
+    Rel_Access_Up(Laptop_Centos, Centos_Extras, "DNF Install") #yellow
+    Rel_Access_Up(Laptop_Centos, Centos_Plus, "DNF Install") #yellow
+    Rel_Access_Up(Laptop_Centos, Centos_SCL, "DNF Install")
+    Rel_Access_Up(Laptop_Centos, EPEL_Repo, "DNF Install")
+
+    Rel_Access_Up(Laptop_Centos, Source_Build, "Git Pull")
+    Rel_Access_Up(Laptop_Centos, Java_11_Jar, "Pray")
+    Rel_Access_Up(Laptop_Centos, Java_8_Jar, "Pray")
+    Rel_Access_Up(Laptop_Centos, OpenJDK_8_Jar, "Pray")
+
+    Rel_Access_Down(Laptop_Centos, SNAP_Octave, "snap install")
+    Rel_Access_Down(Laptop_Centos, Flatpak_Octave, "flatpak install")
+}
+
+together {
+    Rel_Access_Up(Laptop_Ubuntu, SNAP_Octave, "Snap Install")
+    Rel_Access_Up(Laptop_Ubuntu, Flatpak_Octave, "Flatpak Install")
+}
+
+together {
+    Rel_Access_Down(Laptop_Ubuntu, Ubuntu18_Universe, "APT Install")
+    Rel_Access_Down(Laptop_Ubuntu, Ubuntu18_Restricted, "APT Install")
+    Rel_Access_Down(Laptop_Ubuntu, Ubuntu18_Multiverse, "APT Install")
+    Rel_Access_Down(Laptop_Ubuntu, Ubuntu18_Main, "APT Install")
+    Rel_Access_Down(Laptop_Ubuntu, Ubuntu18_PPA, "APT Install")
+}
+
+Rel_Access_Left(Flatpak_Octave, Forge_Symbolic, "Requires")
+Rel_Access_Down(Forge_Symbolic, Python_SymPy, "Requires")
+
+@enduml
+
+
