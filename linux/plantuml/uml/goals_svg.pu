@@ -1,0 +1,45 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/ebbypeter/Archimate-PlantUML/master/Archimate.puml
+' skinparam linetype ortho
+skinparam arrowcolor yellow
+
+top to bottom direction
+
+title The Goal
+
+'Elements'
+
+'Grouping (Goals2020, "2020 Resolutions"){
+    Motivation_Goal(Understand_Finances, "Understand My Financial State")
+    Motivation_Goal(Complete_ML_Class, "Complete the Machine Learning Class")
+    Motivation_Goal(Maintain_Skillset, "Maintain My Technical Skills")
+'}
+
+
+Application_Service(Octave, "GNU Octave 5.2")
+
+
+rectangle PythonPackage {
+      artifact ["SymPy 1.2"] as Python_SymPy
+}
+rectangle OctaveForge {
+      artifact ["Symbolic"] as Forge_Symbolic
+      artifact ["Financial"] as Forge_Financial
+      artifact ["Arduino"] as Forge_Financial
+}
+
+
+'Relationships'
+
+Rel_Realization_Up(Octave, Understand_Finances)
+Rel_Realization_Up(Octave, Complete_ML_Class)
+Rel_Realization_Up(Octave, Maintain_Skillset)
+
+
+Rel_Association_Down(Octave, Forge_Symbolic, "Requires")
+Rel_Association_Down(Forge_Symbolic, Python_SymPy, "Requires")
+
+
+@enduml
+
+

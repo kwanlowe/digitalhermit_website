@@ -1,0 +1,50 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/ebbypeter/Archimate-PlantUML/master/Archimate.puml
+' skinparam linetype ortho
+
+top to bottom direction
+
+title The Package Landscape
+
+'Elements'
+
+together {
+    rectangle SNAPStore {
+      artifact ["GNU Octave 5.1.0 Snap"] as SNAP_Octave
+    }
+
+    rectangle Flathub {
+      artifact ["GNU Octave 5.2.0 Flatpak"] as Flatpak_Octave
+    }
+}
+
+together {
+    top to bottom direction
+    rectangle ["Github Source"] as Source_Build #CornFlowerBlue
+    rectangle ["Java 11 jar"] as Java_11_Jar #CornFlowerBlue
+    rectangle ["Java 8 jar"] as Java_8_Jar #CornFlowerBlue
+    rectangle ["OpenJDK 8 jar"] as OpenJDK_8_Jar #CornFlowerBlue
+}
+
+together {
+    rectangle ["Ubuntu Main"] as Ubuntu18_Main #CornFlowerBlue
+    rectangle ["Ubuntu Universe"] as Ubuntu18_Universe #CornFlowerBlue
+    rectangle ["Ubuntu Restricted"] as Ubuntu18_Restricted #CornFlowerBlue
+    rectangle ["Ubuntu Multiverse"] as Ubuntu18_Multiverse #CornFlowerBlue
+    rectangle ["Ubuntu PPA"] as Ubuntu18_PPA #CornFlowerBlue
+
+}
+node ["Ubuntu 18.04 Laptop"] as Laptop_Ubuntu #DarkTurquoise
+
+'Relationships'
+
+together {
+    Rel_Access_Up(Laptop_Ubuntu, Ubuntu18_Universe, "APT Install")
+    Rel_Access_Up(Laptop_Ubuntu, Ubuntu18_Restricted, "APT Install")
+    Rel_Access_Up(Laptop_Ubuntu, Ubuntu18_Multiverse, "APT Install")
+    Rel_Access_Up(Laptop_Ubuntu, Ubuntu18_Main, "APT Install")
+    Rel_Access_Up(Laptop_Ubuntu, Ubuntu18_PPA, "APT Install")
+}
+@enduml
+
+

@@ -1,0 +1,46 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/ebbypeter/Archimate-PlantUML/master/Archimate.puml
+' skinparam linetype ortho
+skinparam handwritten true
+skinparam arrowcolor lightblue
+skinparam ArrowFontColor lightblue
+
+top to bottom direction
+
+title The Package Landscape
+
+'Elements'
+
+rectangle BaseSystem {
+      artifact ["glibc"] as Base_glibc
+      artifact ["libm"] as Base_libm
+      artifact ["ssl"] as Base_ssl
+      artifact ["libqt"] as Base_qt
+}
+
+rectangle LD_LIBRARY_PATH {
+      artifact ["Microsoft ODBC"] as Custom_ODBC
+}
+
+rectangle Static {
+      artifact ["MyApp.a"] as static_myapp
+      artifact ["OldLib.a"] as static_oldlib
+}
+
+rectangle ["Dynamic Application"] as Application_Binary #CornFlowerBlue
+rectangle ["Static Application"] as Application_Static #CornFlowerBlue
+
+'Relationships'
+
+Rel_Access_Up(Application_Binary, Base_glibc, "Dynamic Link")
+Rel_Access_Up(Application_Binary, Base_libm, "Dynamic Link")
+Rel_Access_Up(Application_Binary, Base_ssl, "Dynamic Link")
+Rel_Access_Up(Application_Binary, Base_qt, "Dynamic Link")
+Rel_Access_Up(Application_Binary, Custom_ODBC, "Dynamic Link")
+
+Rel_Access_Up(Application_Static, static_myapp, "Static/Compile Link")
+Rel_Access_Up(Application_Static, static_oldlib, "Static/Compile Link")
+
+@enduml
+
+

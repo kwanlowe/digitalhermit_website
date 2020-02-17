@@ -1,0 +1,46 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/ebbypeter/Archimate-PlantUML/master/Archimate.puml
+' skinparam linetype ortho
+skinparam handwritten true
+skinparam arrowcolor lightblue
+skinparam ArrowFontColor lightblue
+
+top to bottom direction
+
+title The Package Landscape #Yellow
+
+'Elements'
+
+rectangle HostSystem {
+      artifact ["libqt"] as Base_qt
+      artifact ["File Chooser"] as Base_FileChooser
+}
+
+rectangle Flatpak_Runtime {
+      artifact ["KDE Platform"] as FlatpakPlatformKDE
+      artifact ["Gnome Platform"] as FlatpakPlatformGnome
+      artifact ["Free Desktop Platform"] as FlatpakPlatformFreeDesktop
+}
+
+rectangle Flatpak_BaseApp {
+      artifact ["Python"] as FlatpakBaseAppPython
+      artifact ["Electron"] as FlatpakBaseAppElectron
+}
+
+rectangle Flatpak_Sandbox {
+      rectangle ["Dynamic Application"] as Application_Binary #CornFlowerBlue
+      artifact ["Bundled Library"] as FlatpakBundledLibrary
+}
+
+'Relationships'
+
+Rel_Access_Up(Application_Binary, Base_FileChooser, "Portal")
+
+Rel_Access_Down(Application_Binary, FlatpakPlatformKDE, "Dynamic Link")
+
+Rel_Access_Down(Application_Binary, FlatpakBaseAppPython, "Dynamic Link")
+
+Rel_Access_Down(FlatpakBaseAppPython, FlatpakPlatformKDE, "Dynamic Link")
+@enduml
+
+

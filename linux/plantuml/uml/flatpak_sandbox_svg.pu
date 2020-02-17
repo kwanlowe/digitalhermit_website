@@ -1,0 +1,56 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/ebbypeter/Archimate-PlantUML/master/Archimate.puml
+' skinparam linetype ortho
+skinparam handwritten true
+skinparam arrowcolor lightblue
+skinparam ArrowFontColor lightblue
+
+top to bottom direction
+
+title The Package Landscape #Yellow
+
+'Elements'
+
+rectangle HostSystem {
+      artifact ["libqt"] as Base_qt
+      artifact ["File Chooser"] as Base_FileChooser
+}
+
+rectangle Flatpak_Runtime {
+      artifact ["KDE Platform"] as FlatpakPlatformKDE
+      artifact ["Gnome Platform"] as FlatpakPlatformGnome
+      artifact ["Free Desktop Platform"] as FlatpakPlatformFreeDesktop
+}
+
+rectangle Flatpak_BaseApp {
+      artifact ["Python"] as FlatpakBaseAppPython
+      artifact ["Electron"] as FlatpakBaseAppElectron
+}
+
+rectangle Flatpak_Sandbox1 {
+      rectangle ["Flatpak Application 1"] as Application_Binary1 #CornFlowerBlue
+      artifact ["Bundled Library"] as FlatpakBundledLibrary1
+}
+
+rectangle Flatpak_Sandbox2 {
+      rectangle ["Flatpak Application 2"] as Application_Binary2 #CornFlowerBlue
+      artifact ["Bundled Library"] as FlatpakBundledLibrary2
+}
+
+'Relationships'
+
+Rel_Access_Up(Application_Binary1, Base_FileChooser, "Portal")
+Rel_Access_Up(Application_Binary2, Base_FileChooser, "Portal")
+
+Rel_Access_Down(Application_Binary1, FlatpakPlatformKDE, "Dynamic Link")
+Rel_Access_Down(Application_Binary1, FlatpakBaseAppPython, "Dynamic Link")
+Rel_Access_Down(FlatpakBaseAppPython, FlatpakPlatformKDE, "Dynamic Link")
+
+Rel_Access_Down(Application_Binary2, FlatpakPlatformKDE, "Dynamic Link")
+Rel_Access_Down(Application_Binary2, FlatpakBaseAppPython, "Dynamic Link")
+Rel_Access_Down(FlatpakBaseAppPython, FlatpakPlatformGnome, "Dynamic Link")
+
+
+@enduml
+
+

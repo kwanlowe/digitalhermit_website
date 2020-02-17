@@ -1,0 +1,35 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/ebbypeter/Archimate-PlantUML/master/Archimate.puml
+' skinparam linetype ortho
+skinparam handwritten true
+skinparam arrowcolor lightblue
+skinparam ArrowFontColor lightblue
+
+top to bottom direction
+
+title The Package Landscape
+
+'Elements'
+
+rectangle HostSystem {
+      artifact ["Camera"] as Host_Camera
+      artifact ["User Resources"] as User_Resources #Pink
+      artifact ["Host Library"] as Host_Library #LightGreen
+
+      rectangle AppImage {
+            artifact ["Application"] as AppImage_Application #CornFlowerBlue
+            artifact ["Bundled Library"] as AppImage_Library 
+      } 
+
+}
+
+'Relationships'
+
+
+Rel_Access_Left(AppImage_Application, User_Resources, "Unix Privileges")
+Rel_Access_Left(AppImage_Application, Host_Camera, "Unix Privileges")
+Rel_Access_Left(AppImage_Application, Host_Library, "Unix Privileges")
+
+@enduml
+
+

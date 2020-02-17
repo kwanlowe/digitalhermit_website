@@ -1,0 +1,56 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/ebbypeter/Archimate-PlantUML/master/Archimate.puml
+' skinparam linetype ortho
+skinparam handwritten true
+skinparam arrowcolor lightblue
+skinparam ArrowFontColor lightblue
+
+top to bottom direction
+
+title The Package Landscape #Yellow
+
+'Elements'
+
+rectangle HostSystem {
+      artifact ["libqt"] as Host_qt
+      artifact ["File Chooser"] as Host_FileChooser
+      artifact ["Camera"] as Host_Camera
+      artifact ["Desktop"] as Host_Desktop
+}
+
+rectangle OS_Snap {
+      artifact ["Ubuntu Core"] as Snap_OS
+}
+
+rectangle Library_Snap {
+      artifact ["Python"] as Library_Snap_Python
+}
+
+rectangle App_Snap_1 {
+      rectangle ["Snap Application 1"] as Snap_Binary1 #CornFlowerBlue
+      rectangle ["Writable Area"] as Snap_Writable1 #Pink
+}
+
+rectangle App_Snap_2 {
+      rectangle ["Snap Application 2"] as Snap_Binary2 #CornFlowerBlue
+      rectangle ["Writable Area"] as Snap_Writable2 #Pink
+}
+
+
+'Relationships'
+
+Rel_Access_Up(Snap_Binary1, Host_FileChooser, "Interface")
+Rel_Access_Up(Snap_Binary1, Host_Desktop, "Interface")
+
+Rel_Access_Up(Snap_Binary2, Host_Desktop, "Interface")
+Rel_Access_Up(Snap_Binary2, Host_Camera, "Interface")
+
+Rel_Access_Down(Snap_Binary1, Snap_OS, "Interface")
+Rel_Access_Down(Snap_Binary1, Library_Snap_Python, "Content Interface")
+
+
+Rel_Access_Down(Snap_Binary2, Snap_OS, "Content Interface")
+
+@enduml
+
+
