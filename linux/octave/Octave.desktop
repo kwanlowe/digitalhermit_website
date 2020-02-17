@@ -1,0 +1,14 @@
+[Desktop Entry]
+Encoding=UTF-8
+Exec=flatpak run --user org.octave.Octave --gui
+Icon=/home/kwan/Pictures/Gnu-octave-logo.png
+Type=Application
+Terminal=false
+Comment=GNU Octave (Flatpak)
+Name=GNU Octave
+GenericName=octave
+StartupNotify=true
+Categories=Development;IDE;Java;
+Name[en_US]=Octave 5.2.0
+GenericName[en_US]=Octave 5.2.0 (Flappak)
+
