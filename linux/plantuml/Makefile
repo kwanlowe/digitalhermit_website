@@ -7,7 +7,6 @@ REPORT_DIR=Gallery
 TITLE1="Package Landscape"
 TITLE2="Package Landscape"
 TITLE3="How can I install an application on Linux?"
-# IMAGES := $(shell ls images)
 
 setup:
 	mkdir -p bin tmp $(REPORT_DIR)/images
@@ -19,9 +18,11 @@ setup:
 album:	render gallery index push
 local:	render render-svg gallery index 
 
-render:
+render-all:	render-png render-svg
+
+render-png:
 	mkdir -p $(CURDIR)/$(REPORT_DIR)/images
-	java -jar bin/plantuml.jar uml/*.pu -o $(CURDIR)/$(REPORT_DIR)/images/
+	java -jar bin/plantuml.jar uml/*_png.pu -o $(CURDIR)/$(REPORT_DIR)/images/
 
 render-svg:
 	mkdir -p $(CURDIR)/$(REPORT_DIR)/images
