@@ -17,7 +17,7 @@ setup:
 
 
 album:	render gallery index push
-local:	render gallery index 
+local:	render render-svg gallery index 
 
 render:
 	mkdir -p $(CURDIR)/$(REPORT_DIR)/images
@@ -25,7 +25,7 @@ render:
 
 render-svg:
 	mkdir -p $(CURDIR)/$(REPORT_DIR)/images
-	java -jar bin/plantuml.jar -tsvg uml/*.pu -o $(CURDIR)/$(REPORT_DIR)/images/
+	java -jar bin/plantuml.jar -tsvg uml/*_svg.pu -o $(CURDIR)/$(REPORT_DIR)/images/
 
 
 gallery:

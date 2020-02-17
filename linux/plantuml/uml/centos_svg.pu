@@ -1,9 +1,9 @@
 @startuml
 !includeurl https://raw.githubusercontent.com/ebbypeter/Archimate-PlantUML/master/Archimate.puml
 ' skinparam linetype ortho
-skinparam linecolor white
 skinparam handwritten true
-skinparam arrowcolor yellow
+skinparam arrowcolor lightblue
+skinparam ArrowFontColor lightblue
 
 top to bottom direction
 
@@ -15,10 +15,16 @@ rectangle PythonPackage {
       artifact ["SymPy 1.2"] as Python_SymPy
 }
 rectangle OctaveForge {
+      top to bottom direction
       artifact ["Symbolic"] as Forge_Symbolic
+      artifact ["Optim"] as Forge_Optim
+      artifact ["Statistics"] as Forge_Statistics
+      artifact ["IO"] as Forge_IO
 }
 
-
+rectangle Toolchain {
+      artifact ["gcc"] as Toolchain_GCC
+}
 
 together {
     rectangle SNAPStore {
@@ -28,6 +34,11 @@ together {
     rectangle Flathub {
       artifact ["GNU Octave 5.2.0 Flatpak"] as Flatpak_Octave
     }
+
+    rectangle AppImageHub {
+      artifact ["GNU Octave 4.2.0 AppImage"] as AppImage_Octave
+    }
+
 }
 
 together {
@@ -64,9 +75,9 @@ node ["Ubuntu 18.04 Laptop"] as Laptop_Ubuntu #DarkTurquoise
 'Relationships'
 
 together {
-    Rel_Access_Up(Laptop_Centos, Centos_Repo, "DNF Install") #yellow
-    Rel_Access_Up(Laptop_Centos, Centos_Extras, "DNF Install") #yellow
-    Rel_Access_Up(Laptop_Centos, Centos_Plus, "DNF Install") #yellow
+    Rel_Access_Up(Laptop_Centos, Centos_Repo, "DNF Install")
+    Rel_Access_Up(Laptop_Centos, Centos_Extras, "DNF Install")
+    Rel_Access_Up(Laptop_Centos, Centos_Plus, "DNF Install")
     Rel_Access_Up(Laptop_Centos, Centos_SCL, "DNF Install")
     Rel_Access_Up(Laptop_Centos, EPEL_Repo, "DNF Install")
 
@@ -92,8 +103,11 @@ together {
     Rel_Access_Down(Laptop_Ubuntu, Ubuntu18_PPA, "APT Install")
 }
 
-Rel_Access_Left(Flatpak_Octave, Forge_Symbolic, "Requires")
+Rel_Access(Flatpak_Octave, Forge_Symbolic, "Requires")
 Rel_Access_Down(Forge_Symbolic, Python_SymPy, "Requires")
+Rel_Access_Left(Forge_Optim, Forge_Statistics, "Requires")
+Rel_Access_Left(Forge_Statistics, Forge_IO, "Requires")
+Rel_Access_Down(Forge_IO, Toolchain_GCC, "Requires")
 
 @enduml
 
