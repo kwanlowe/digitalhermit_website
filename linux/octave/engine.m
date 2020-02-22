@@ -64,14 +64,26 @@ printf("V_c = %f\n", eval(V_c))
 
 % Plot 1: V vs theta
 
-theta=linspace(-2*pi, 2*pi);
-y=eval(eval(V));
-x=eval(theta);
-% subplot(2,1,1);
-plot(x,y)
 %Create an array of Volume values
 % from 0 to Vd
+theta=linspace(-2*pi, 2*pi);
+x_1=eval(theta);
+y_1=eval(eval(V));
+subplot(2,1,1);
+
+plot(x_1,y_1)
 xlabel ("Theta");
 ylabel ("Volume [in^3]");
 title ("Volume versus Crank Angle Relationship");
-error("stop")
+
+%Create an array of Volume values
+% from 0 to Vd
+
+V_prime=diff(V);
+subplot(2,1,2);
+x_2=eval(theta);
+y_2=eval(eval(V_prime));
+plot(x_2, y_2)
+xlabel ("Theta");
+ylabel ("V [^\']");
+title ("Volume versus Crank Angle Relationship");
