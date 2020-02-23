@@ -73,7 +73,7 @@ axis([ -180, 180, 0, 2500])
 xlabel ("Theta");
 ylabel ("Volume [in^3]");
 title ("Volume versus Crank Angle Relationship");
-disp("kl3")
+
 %Create an array of Volume values
 % from 0 to Vd
 
@@ -98,8 +98,6 @@ axis ([-180, 180, 0, 1200])
 xlabel ("Theta");
 ylabel ("Area");
 title ("Area versus Crank Angle Relationship");
-
-disp("kll6")
 
 subplot(2,2,4);
 x_4=linspace(-180,180);
