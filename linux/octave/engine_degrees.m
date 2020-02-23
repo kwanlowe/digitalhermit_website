@@ -29,22 +29,21 @@ syms U_p N qty_1 qty_2 A_prime thetaD pi
 V_d = ((pi * (B^2))/4) * L
 
 V_c = V_d / (r - 1)
-qty = sqrt((R^2 - sin(theta)^2))
-V = V_c * ( 1 + ((r - 1)/2) *( R + 1 - cos(theta) - qty))
-A = A_ch + A_p + pi * B * L/2 * ( R + 1 - cos(theta) - qty)
-U_p = pi * L * N * sin(theta) * (cos(theta)/qty + 1)
+qty = sqrt((R^2 - sind(theta)^2))
+V = V_c * ( 1 + ((r - 1)/2) *( R + 1 - cosd(theta) - qty))
+A = A_ch + A_p + pi * B * L/2 * ( R + 1 - cosd(theta) - qty)
+U_p = pi * L * N * sind(theta) * (cosd(theta)/qty + 1)
 
 qty_1 = ((r - 1)/2)
-qty_2 = (sin(theta) * cos(theta))/(2 * qty)
+qty_2 = (sind(theta) * cosd(theta))/(2 * qty)
 
-Vprime = V_c * (( sin(theta) * qty_1) + qty_2 *( r - 1 ))
+Vprime = V_c * (( sind(theta) * qty_1) + qty_2 *( r - 1 ))
 
-A_prime = (( pi * B * L)/2) * (sin(theta) + (sin(theta)*cos(theta))/qty)
+A_prime = (( pi * B * L)/2) * (sind(theta) + (sind(theta)*cosd(theta))/qty)
 
 %Inputs
-syms thetaD
-thetaD = 15
-theta = (thetaD * pi)/sym(180)
+
+theta = 15
 
 B = 14; %[inches];
 L = 14; %[inches]
@@ -64,50 +63,54 @@ printf("V_c = %f\n", eval(V_c))
 
 % Plot 1: V vs theta
 
-%Create an array of Volume values
-% from 0 to Vd
-theta=linspace(-2*pi, 2*pi);
-x_1=eval(theta);
-y_1=eval(eval(V));
+theta=linspace(-180, 180);
+x_1=linspace(-180,180);
+y_1=eval(V);
 subplot(2,2,1);
-
 plot(x_1,y_1)
 grid 
-axis([ -5, 5, 0, 2500])
+axis([ -180, 180, 0, 2500])
 xlabel ("Theta");
 ylabel ("Volume [in^3]");
 title ("Volume versus Crank Angle Relationship");
-
+disp("kl3")
 %Create an array of Volume values
 % from 0 to Vd
 
 V_prime=diff(V);
+x_2=linspace(-180,180);
+y_2=eval(V_prime);
 subplot(2,2,2);
-x_2=eval(theta);
-y_2=eval(eval(V_prime));
 plot(x_2, y_2)
 grid on
-axis ([-5, 5, -1200, 1200])
+axis ([-180, 180, -20, 20])
 xlabel ("Theta");
 ylabel ("V [^\']");
 title ("dV versus Crank Angle Relationship");
 
+
 subplot(2,2,3);
-x_3=eval(theta);
-y_3=eval(eval(A));
+x_3=linspace(-180, 180);
+y_3=eval(A);
 plot(x_3, y_3)
 grid on
-axis ([-5, 5, 0, 1200])
+axis ([-180, 180, 0, 1200])
 xlabel ("Theta");
 ylabel ("Area");
 title ("Area versus Crank Angle Relationship");
 
+disp("kll6")
+
 subplot(2,2,4);
-x_4=eval(theta);
-y_4=eval(eval(A_prime));
-plot(x_2, y_2)
+x_4=linspace(-180,180);
+y_4=eval(A_prime);
+plot(x_4, y_4)
 grid on
-axis ([-5, 5, -1200, 1200])
+axis ([-180, 180, -500, 500])
 xlabel ("Theta");
 ylabel ("dA");
 title ("dA versus Crank Angle Relationship");
+
+
+% Save Images
+print -dpng diagram_engine_degrees.png
