@@ -72,6 +72,8 @@ y_1=eval(eval(V));
 subplot(2,1,1);
 
 plot(x_1,y_1)
+grid on
+axis([ -5, 5, 0, 2500])
 xlabel ("Theta");
 ylabel ("Volume [in^3]");
 title ("Volume versus Crank Angle Relationship");
@@ -84,6 +86,8 @@ subplot(2,1,2);
 x_2=eval(theta);
 y_2=eval(eval(V_prime));
 plot(x_2, y_2)
+grid on
+axis ([-5, 5, -1200, 1200])
 xlabel ("Theta");
 ylabel ("V [^\']");
 title ("Volume versus Crank Angle Relationship");
