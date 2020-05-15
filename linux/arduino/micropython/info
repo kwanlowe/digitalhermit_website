@@ -1,0 +1,4 @@
+Minicom Configuration
+	minicom -s
+	Serial Port Setup (/dev/ttyUSB0)
+	No Hardware Flow Control
