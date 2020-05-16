@@ -34,3 +34,7 @@ start-minicom:
 
 clone-webrepl:
 	git clone https://github.com/micropython/webrepl.git
+
+push-code:
+	@echo Copying boot.py and main.py to $(BOARD) at $(USB_PORT)
+	$(PYVENV)/bin/rshell -p $(USB_PORT) cp boot.py main.py /pyboard
