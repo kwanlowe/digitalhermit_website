@@ -7,10 +7,10 @@ def do_connect():
     if not sta_if.isconnected():
         print('connecting to network...')
         sta_if.active(True)
-        sta_if.connect('MYNETWORKSID', 'MYWIFIPASSWORD')
+        sta_if.connect('ShivaStation-Cerberus', 'Th3L0w3Fam1ly')
         while not sta_if.isconnected():
             pass
     print('network config:', sta_if.ifconfig())
 
-do_connect
+do_connect()
 webrepl.start()
