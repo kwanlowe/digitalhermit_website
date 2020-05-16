@@ -32,3 +32,5 @@ deploy-firmware:
 start-minicom:
 	        minicom -D $(USB_PORT) -b $(BAUDRATE)
 
+clone-webrepl:
+	git clone https://github.com/micropython/webrepl.git
