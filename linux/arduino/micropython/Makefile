@@ -38,3 +38,7 @@ clone-webrepl:
 push-code:
 	@echo Copying boot.py and main.py to $(BOARD) at $(USB_PORT)
 	$(PYVENV)/bin/rshell -p $(USB_PORT) cp boot.py main.py /pyboard
+
+push-fan:
+	@echo Copying boot.py and solder_fan.py to $(BOARD) at $(USB_PORT)
+	$(PYVENV)/bin/rshell -p $(USB_PORT) cp solder_fan.py /pyboard/main.py
