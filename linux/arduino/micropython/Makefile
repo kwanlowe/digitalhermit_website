@@ -9,9 +9,9 @@ BAUDRATE=115200
 FLASHSIZE=detect
 
 setup:
-	mkdir firmware 
+	mkdir -p firmware 
 	virtualenv -p python3.6 $(PYVENV)
-	$(PYVENV)/bin/pip install esptool
+	$(PYVENV)/bin/pip install esptool rshell
 
 add-user-to-group:
 	sudo usermod -a -G dialout $(USER)
