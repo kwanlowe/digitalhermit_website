@@ -5,7 +5,6 @@ import (
     "log"
     "flag"
 //    "crypto/tls"
-    "reflect"
     "strconv"
     toml "github.com/BurntSushi/toml"
     ldap "github.com/go-ldap/ldap"
@@ -69,8 +68,6 @@ func main() {
 
     conn, err := ldap.Dial("tcp", dialurl)
 
-    fmt.Println(reflect.TypeOf(err))
-    fmt.Println(reflect.TypeOf(conn))
     // conn, err := ldap.DialTLS("tcp", dialurl, tlsConf)
     if err != nil {
         fmt.Println("dialURL failure")
@@ -105,8 +102,6 @@ func main() {
     s06 := df.NewSeriesString( "telephoneNumber", nil)
 
     df := df.NewDataFrame(s01, s02, s03, s04, s05, s06)
-    // df.Append(nil,  "1997-05-02", "Harry Houdini" )
-    // fmt.Println(df)
 
 
     for {
@@ -114,8 +109,9 @@ func main() {
                                          ldap.DerefAlways, 0, 0, false, filter,
                                          attributes, controls)
         response, err := conn.Search(request)
-        fmt.Println(reflect.TypeOf(response))
-         response.PrettyPrint(5)
+
+        response.PrettyPrint(5)
+
         if err != nil {
             log.Fatalf("Failed to execute search request: %s", err.Error())
         }
@@ -144,5 +140,6 @@ func main() {
         break
     }
 
-    fmt.Println(df)
+    // fmt.Println(df)
+    fmt.Print(df.Table())
 }
