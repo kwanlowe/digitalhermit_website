@@ -1,0 +1,11 @@
+title = "Authentication Information"
+[auth]
+Username = "cn=read-only-admin,dc=example,dc=com"
+Password = "password"
+[ldap]
+Filter = "(uid=*)"
+Server = "ldap.forumsys.com"
+Port = 389
+BaseDN = "DC=example,DC=com"
+SearchBase = "DC=example,DC=com"
+ 
