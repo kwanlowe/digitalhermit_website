@@ -7,4 +7,4 @@ To use:
 
 make build
 
-./ldap\_ -config forumsys.ldap
+./ldap\_report -config forumsys.ldap
