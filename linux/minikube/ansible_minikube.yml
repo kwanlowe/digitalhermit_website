@@ -52,4 +52,16 @@
         path: /usr/bin/kubectl
         mode: 755
       become: true
+
+    - name: Disable swap
+      shell: |
+        swapoff -a
+      become: true
+
+    - name: Disable swap on boot
+      replace:
+        path: /etc/fstab
+        regexp: '^([^#].*?\sswap\s+sw\s+.*)$'
+        replace: '# \1'
+      become: true
         
