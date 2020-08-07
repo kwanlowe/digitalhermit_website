@@ -69,5 +69,23 @@ kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   24m
 
 ```
 
+* Once the environment is ready, you can run a test deployment:
+  * `kubectl create deployment hello-node --image=k8s.gcr.io/echoserver:1.4`
+  * `kubectl get deployments`
+  * `kubectl get pods`
+  * `kubectl get events`
+
+You should see something like:
+```
+[vagrant@localhost ~]$ kubectl get events
+LAST SEEN   TYPE      REASON              OBJECT                             MESSAGE
+77s         Warning   FailedScheduling    pod/hello-node-7bf657c596-k5k27    no nodes available to schedule pods
+2m20s       Normal    SuccessfulCreate    replicaset/hello-node-7bf657c596   Created pod: hello-node-7bf657c596-k5k27
+2m20s       Normal    ScalingReplicaSet   deployment/hello-node              Scaled up replica set hello-node-7bf657c596 to 1
+```
+
+Again, it may take a while depending on the resources of your environment. If this fails, you may need to increase the memory
+in the Vagrantfile in the git repository.
+
 
 
