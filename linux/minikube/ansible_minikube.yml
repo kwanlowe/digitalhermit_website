@@ -50,7 +50,7 @@
     - name: Set executable bit on kubectl
       file:
         path: /usr/bin/kubectl
-        mode: 755
+        mode: 0755
       become: true
 
     - name: Disable swap
