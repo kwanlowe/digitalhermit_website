@@ -1,3 +1,4 @@
 *.swp
 roles/
 p3_venv/
+.vagrant/
