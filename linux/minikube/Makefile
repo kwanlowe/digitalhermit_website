@@ -7,7 +7,7 @@ setup:
 	$(VENV)/bin/pip install ansible robotframework robotframework-sshlibrary
 	mkdir -p $(ROLES_PATH)
 	$(VENV)/bin/ansible-galaxy install --roles-path $(ROLES_PATH) geerlingguy.docker
-	vagrant plugin install vagrant-disksize
+	vagrant plugin install vagrant-disksize vagrant-google
 	
 build-box:
 	vagrant up 

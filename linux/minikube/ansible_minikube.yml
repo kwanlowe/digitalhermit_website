@@ -1,3 +1,5 @@
+---
+
 - name: Minikube Installer
   hosts: all
   vars:
@@ -7,10 +9,15 @@
     - { role: geerlingguy.docker, become: true }
 
   tasks:
-    - name: Install EPEL Repository
+    - name: Install packages
       dnf:
          name: 
            - "epel-release"
+           - "device-mapper-persistent-data"
+           - "lvm2"
+           - "conntrack-tools"
+           - "socat"
+           - "iproute-tc"
          state: present
       become: true
 
@@ -20,6 +27,7 @@
         state: latest
       become: true
 
+    
     - name: Start service docker
       service:
         name: docker

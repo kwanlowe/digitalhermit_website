@@ -42,9 +42,9 @@
     * Should show a swap size of 0
   
 * Setup minikube environment
-  *  eval $(minikube -p minikube docker-env)
   *  minikube start --driver=docker
     * This step can take 10 minutes or more to complete, depending on host resources
+  *  eval $(minikube -p minikube docker-env)
 
 
 * Once the minikube environment is up, you can verify with:
