@@ -26,11 +26,12 @@
   `gcloud auth configure-docker`
 
 * For the next step, we will need the GCloud project iD. This can be retrieved from the Project Home page in the browser or
-  if you have an account with appropriate permission, frmo the gcloud command line utility:
-    [klowe@elysium] gcloud projects list 
-    PROJECT_ID                NAME               PROJECT_NUMBER
-    anthos-playground-286117  anthos-playground  1034691625917
-
+  if you have an account with appropriate permission, from the gcloud command line utility:
+```  
+     [klowe@elysium] gcloud projects list 
+     PROJECT_ID                NAME               PROJECT_NUMBER
+     anthos-playground-286117  anthos-playground  1034691625917
+```
 * Tag the image we created in the previous step:
   ` podman tag podman-webserver <GCloud Host>/<Project ID>/<Image Name>`
   For example:
@@ -41,11 +42,11 @@
   ` podman push gcr.io/anthos-playground-286117/podman-webserver`
 
   If all goes well, you should see the image pushed:
-
+```
     Getting image source signatures
     Copying blob 843c3701e622 done
     Copying blob d0f104dc0a1f done
     Copying config d18db62e9e done
     Writing manifest to image destination
     Storing signatures
-
+```
