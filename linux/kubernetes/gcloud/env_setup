@@ -1,0 +1,1 @@
+export PROJECT_ID=$(gcloud projects list --filter="name=anthos-playground"|awk 'NR==2{print $3}' ) 
