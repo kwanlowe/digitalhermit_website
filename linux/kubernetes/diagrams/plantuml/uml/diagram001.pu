@@ -1,0 +1,37 @@
+@startuml kubernetes
+
+!include legend.iuml
+!include kubernetes_icons.iuml
+
+footer Kubernetes Plant-UML
+scale max 1024 width
+
+skinparam nodesep 10
+skinparam ranksep 10
+
+' Azure
+!define AzurePuml https://raw.githubusercontent.com/RicardoNiepel/Azure-PlantUML/release/2-1/dist
+
+!includeurl AzurePuml/AzureCommon.puml
+!includeurl AzurePuml/AzureSimplified.puml
+
+' Kubernetes
+
+actor "User" as userAlias
+left to right direction
+
+' Kubernetes Components
+Cluster_Boundary(cluster, "Kubernetes Cluster") {
+    Namespace_Boundary(ns, "Web") {
+        KubernetesSvc(svc, "service", "")
+        KubernetesPod(pod1, "web-pod1", "")
+        KubernetesPod(pod2, "web-pod2", "")
+    }
+}
+
+Rel(userAlias,svc,"get HTTP/1.1 index.html", "1")
+Rel(svc,pod1,"load Balances to Pods", "2")
+Rel(svc,pod2,"load Balances to Pods", "2")
+Rel_U(pod1, svc, "serves content", "3")
+Rel(svc, userAlias, "return content to", "4")
+@enduml
