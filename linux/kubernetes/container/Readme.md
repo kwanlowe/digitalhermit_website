@@ -1,3 +1,22 @@
+# Overview
+
+This module sets up a Vagrant-based container host to run Docker.
+
+# Setup
+
+* On the host machine (laptop/workstation), ensure that the following packages are installed:
+  * Vagrant (https://www.vagrantup.com/downloads)
+  * Python 3.6 or later
+  
+* Clone this repository and change to this directory
+  * ``git clone https://github.com/kwanlowe/digitalhermit_website.git``
+  * cd digitalhermit\_website/linux/kubernetes/container
+
+* Install a local python virtual environment, configure vagrant
+  * `` make setup ``
+  * `` source env_setup
+
+
 
 ## Gcloud Registry Login
 
