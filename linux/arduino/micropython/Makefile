@@ -28,6 +28,9 @@ erase-flash:
 deploy-firmware:
 	$(PYVENV)/bin/esptool.py --port $(USB_PORT) --baud $(UPLOAD_BAUDRATE) write_flash -fm dio --flash_size=$(FLASHSIZE)  0 firmware/$(BOARD)-$(VERSION).bin
 
+push-oled-library:
+	wget https://raw.githubusercontent.com/micropython/micropython/master/drivers/display/ssd1306.py
+	ampy --port $(USB_PORT) put ssd1306.py
 
 start-minicom:
 	        minicom -D $(USB_PORT) -b $(BAUDRATE)
@@ -42,3 +45,7 @@ push-code:
 push-fan:
 	@echo Copying boot.py and solder_fan.py to $(BOARD) at $(USB_PORT)
 	$(PYVENV)/bin/rshell -p $(USB_PORT) cp solder_fan.py /pyboard/main.py
+
+push-oled:
+	@echo Copying boot.py and oled_example.py to $(BOARD) at $(USB_PORT)
+	$(PYVENV)/bin/rshell -p $(USB_PORT) cp oled_example.py /pyboard/main.py
