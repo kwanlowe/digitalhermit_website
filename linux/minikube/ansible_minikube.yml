@@ -1,0 +1,75 @@
+---
+
+- name: Minikube Installer
+  hosts: all
+  vars:
+    kll_var1: "Minikube Tester"
+
+  roles:
+    - { role: geerlingguy.docker, become: true }
+
+  tasks:
+    - name: Install packages
+      dnf:
+         name: 
+           - "epel-release"
+           - "device-mapper-persistent-data"
+           - "lvm2"
+           - "conntrack-tools"
+           - "socat"
+           - "iproute-tc"
+         state: present
+      become: true
+
+    - name: install updates
+      yum: 
+        name: "*" 
+        state: latest
+      become: true
+
+    
+    - name: Start service docker
+      service:
+        name: docker
+        state: started
+      become: true
+
+    - name: Add vagrant to docker group
+      user:
+        name: vagrant
+        groups: docker
+        append: yes
+      become: true
+
+    - name: Refresh SSH connection
+      meta: reset_connection
+      become: true
+
+    - name: Install minikube
+      yum:
+        name: https://storage.googleapis.com/minikube/releases/latest/minikube-latest.x86_64.rpm
+        state: present
+      become: true
+
+    - name: Install kubectl
+      command: curl -L "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl" -o /usr/bin/kubectl
+      become: true
+
+    - name: Set executable bit on kubectl
+      file:
+        path: /usr/bin/kubectl
+        mode: 0755
+      become: true
+
+    - name: Disable swap
+      shell: |
+        swapoff -a
+      become: true
+
+    - name: Disable swap on boot
+      replace:
+        path: /etc/fstab
+        regexp: '^([^#].*?\sswap\s+sw\s+.*)$'
+        replace: '# \1'
+      become: true
+        

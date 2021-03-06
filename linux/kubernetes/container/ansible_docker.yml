@@ -1,0 +1,48 @@
+---
+
+- name: Base Docker Installer
+  hosts: all
+  vars:
+    kll_var1: "Minikube Tester"
+
+  roles:
+    - { role: geerlingguy.docker, become: true }
+
+  tasks:
+    - name: Install packages
+      dnf:
+         name: 
+           - "epel-release"
+           - "device-mapper-persistent-data"
+           - "lvm2"
+           - "conntrack-tools"
+           - "socat"
+           - "iproute-tc"
+           - "make"
+         state: present
+      become: true
+
+    - name: install updates
+      yum: 
+        name: "*" 
+        state: latest
+      become: true
+
+    
+    - name: Start service docker
+      service:
+        name: docker
+        state: started
+      become: true
+
+    - name: Add vagrant to docker group
+      user:
+        name: vagrant
+        groups: docker
+        append: yes
+      become: true
+
+    - name: Refresh SSH connection
+      meta: reset_connection
+      become: true
+
