@@ -28,15 +28,26 @@ package "Deploy Network" {
 }
 
 
+package "github" {
+    Cloud_Storage(kubespray_git, "Kubespray git repo", "github.com")
+}
+
+
 package "Google Cloud" {
 
     Compute_Engine(Jumpoff_Server, "Jumpoff Server", "Compute Engine")
+
     together {
         Compute_Engine(Worker_Node_01, "Worker 1", "Compute Engine")
         Compute_Engine(Worker_Node_02, "Worker 2", "Compute Engine")
         Compute_Engine(Worker_Node_03, "Worker 3", "Compute Engine")
     }
-    Workstation -->  Jumpoff_Server:"SSH"
+
+  
+    Workstation -down->  Jumpoff_Server:"SSH"
+
+    kubespray_git -left-> Jumpoff_Server: "HTTPS"
+
     Jumpoff_Server -down-> Worker_Node_01 
     Jumpoff_Server -down-> Worker_Node_02 
     Jumpoff_Server -down-> Worker_Node_03 
