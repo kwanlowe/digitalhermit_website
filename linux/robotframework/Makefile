@@ -11,6 +11,11 @@ test:
 	rm -rf Results/*
 	robot -d Results Tests/$(subcomponent).robot
 
+build-docker:
+	podman build -t robotframework .
+
+docker-based-test:
+	podman run -v $(CURDIR)/data/Results:/Results -v $(CURDIR)/data/Tests:/Tests robotframework
 
 run-chrome-container:
 	podman run \
