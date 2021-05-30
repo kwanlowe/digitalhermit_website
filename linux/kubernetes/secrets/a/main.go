@@ -53,7 +53,8 @@ func main() {
 		// Or specify namespace to get pods in particular namespace
 		pods, err := clientset.CoreV1().Pods("").List(context.TODO(), metav1.ListOptions{})
 		if err != nil {
-			panic(err.Error())
+			log.Print("Error connecting:  %v", err)
+			// panic(err.Error())
 		}
 		fmt.Printf("There are %d pods in the cluster\n", len(pods.Items))
 
@@ -66,11 +67,12 @@ func main() {
 		} else if statusError, isStatus := err.(*errors.StatusError); isStatus {
 			fmt.Printf("Error getting pod %v\n", statusError.ErrStatus.Message)
 		} else if err != nil {
-			panic(err.Error())
+			log.Print("Error connecting:  %v", err)
+			// panic(err.Error())
 		} else {
 			fmt.Printf("Found example-xxxxx pod in default namespace\n")
 		}
 
-		time.Sleep(10 * time.Second)
+		time.Sleep(60000 * time.Second)
 	}
 }
