@@ -28,6 +28,8 @@ render-svg:
 	mkdir -p $(CURDIR)/$(REPORT_DIR)/images
 	java -jar bin/plantuml.jar -tsvg uml/*_svg.pu -o $(CURDIR)/$(REPORT_DIR)/images/
 
+single:
+	java -jar bin/plantuml.jar -t$(GRAPHIC_TYPE) uml/$(UML).pu -o $(CURDIR)/$(REPORT_DIR)/images/
 
 gallery:
 	mkdir -p $(REPORT_DIR)
