@@ -15,11 +15,16 @@ build-docker:
 	podman build -t robotframework .
 
 docker-based-test:
-	podman run -v $(CURDIR)/data/Results:/Results -v $(CURDIR)/data/Tests:/Tests robotframework
+	podman run \
+	  -v $(CURDIR)/data/Results:/Results \
+	  -v $(CURDIR)/data/Tests:/Tests \
+	  --pod pod-test \
+	  robotframework
 
 run-chrome-container:
 	podman run \
 	  -d \
+	  --pod new:pod-test \
 	  -p 4444:4444 \
 	  -e SE_EVENT_BUS_PUBLISH_PORT=4442 \
 	  -e SE_EVENT_BUS_SUBSCRIBE_PORT=4443 \
