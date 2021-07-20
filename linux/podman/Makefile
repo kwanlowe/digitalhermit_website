@@ -4,6 +4,7 @@ username=deploy
 webhost=webserver
 chromeport=4444
 docpath=/var/www/html/architecture/$(component)/Tests
+podname=robotframework-pod
 
 WEBPORT=18080
 .PHONY: test
@@ -18,27 +19,43 @@ test:
 build-container:
 	podman build -t robotframework .
 
-docker-based-test:	create-dirs
+build-container-with-buildah:
+	buildah bud -t robotframework .
+
+create-robot-pod:
+	podman pod create -n $(podname) \
+	  -p 4444:4444 \
+	  -p 4442:4442 \
+	  -p 4443:4443 \
+
+run-robot-test:	create-dirs
 	podman run \
-	  -v $(CURDIR)/data/Results:/Results:Z \
-	  -v $(CURDIR)/data/Tests:/Tests:Z \
-	  --pod pod-test \
+	  -v $(CURDIR)/data/robot/Results:/Results:Z \
+	  -v $(CURDIR)/data/robot/Tests:/Tests:Z \
+	  --pod $(podname) \
 	  --label=disable \
 	  robotframework
-
-web-server:
-	cd $(CURDIR)/data/Results && python3 -m http.server $(WEBPORT)
 
 run-chrome-container:
 	podman run \
 	  -d \
-	  --pod new:pod-test \
-	  -p 4444:4444 \
+	  --pod $(podname) \
 	  -e SE_EVENT_BUS_PUBLISH_PORT=4442 \
 	  -e SE_EVENT_BUS_SUBSCRIBE_PORT=4443 \
 	  -v /dev/shm:/dev/shm \
 	  --name standalone-chrome \
 	  selenium/standalone-chrome:latest
+
+run-firefox-container:
+	podman run \
+	  -d \
+	  --pod $(podname) \
+	  -e SE_EVENT_BUS_PUBLISH_PORT=4442 \
+	  -e SE_EVENT_BUS_SUBSCRIBE_PORT=4443 \
+	  -v /dev/shm:/dev/shm \
+	  --name standalone-firefox \
+	  selenium/standalone-firefox:latest
+
 
 push:
 	PATH=/usr/bin:~/bin/Archi:$$PATH \
@@ -62,6 +79,9 @@ run-fgallery:
 	  -p 9080:80 \
 	  -e "GALLERY_TITLE=FLUX Demo" \
 	  alterway/docker-image-gallery
+
+web-server:
+	cd $(CURDIR)/data/robot/Results && python3 -m http.server $(WEBPORT)
 
 install-chromedriver:
 	./install_chromedriver
