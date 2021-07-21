@@ -5,6 +5,7 @@ webhost=webserver
 chromeport=4444
 docpath=/var/www/html/architecture/$(component)/Tests
 
+WEBPORT=18080
 .PHONY: test
 
 test:
@@ -15,11 +16,20 @@ build-docker:
 	podman build -t robotframework .
 
 docker-based-test:
-	podman run -v $(CURDIR)/data/Results:/Results -v $(CURDIR)/data/Tests:/Tests robotframework
+	podman run \
+	  -v $(CURDIR)/data/Results:/Results:Z \
+	  -v $(CURDIR)/data/Tests:/Tests:Z \
+	  --pod pod-test \
+	  --label=disable \
+	  robotframework
+
+web-server:
+	cd $(CURDIR)/data/Results && python3 -m http.server $(WEBPORT)
 
 run-chrome-container:
 	podman run \
 	  -d \
+	  --pod new:pod-test \
 	  -p 4444:4444 \
 	  -e SE_EVENT_BUS_PUBLISH_PORT=4442 \
 	  -e SE_EVENT_BUS_SUBSCRIBE_PORT=4443 \
