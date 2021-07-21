@@ -80,6 +80,19 @@ run-fgallery:
 	  -e "GALLERY_TITLE=FLUX Demo" \
 	  alterway/docker-image-gallery
 
+create-secret:
+	echo "FluxDemo"|podman secret create fluxdemo-secret -
+
+run-multitool:
+	podman run \
+	  --secret fluxdemo-secret \
+	  --detach \
+	  --name multitool \
+	  praqma/network-multitool
+
+attach-multitool:
+	podman exec -it multitool /bin/ash
+
 web-server:
 	cd $(CURDIR)/data/robot/Results && python3 -m http.server $(WEBPORT)
 
