@@ -10,7 +10,7 @@ WEBPORT=18080
 .PHONY: test
 
 create-dirs:
-	mkdir -p data/Results data/Tests
+	mkdir -p data/robot/Results data/robot/Tests
 
 test:
 	rm -rf Results/*
