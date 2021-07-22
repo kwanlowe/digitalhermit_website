@@ -138,6 +138,8 @@ Add the following to the /etc/wsl.conf file:
   appendWindowsPath=false # append Windows path to $PATH variable;
 ```
 
+For other ```wsl.conf``` options, see [WSL.conf](https://docs.microsoft.com/en-us/windows/wsl/wsl-config#configure-per-distro-launch-settings-with-wslconf).
+
 ### Install Useful Packages
 At this point, you can launch the new CentOS image as you would any other WSL instance. The installed CentOS is fairly bare, as it was designed for a container image. To make this closer to a default CentOS, you can query the list of base packages:
 
@@ -166,6 +168,8 @@ Of these, I installed a subset of packages. Here are a few recommended additiona
   - openssh-clients
   - bash-completion
   - epel-release
+  - man-pages
+  - man
 
 These can be installed with ```sudo dnf install <package-name>```.
 
