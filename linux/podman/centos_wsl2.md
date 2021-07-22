@@ -124,6 +124,21 @@ If everything was done correctly, you should be the default user created in thes
 
 ## Post-Configuration
 
+### Disable Windows PATH and Binaries
+
+By default, the Windows system PATH is copied to the WSL installation. To disable:
+
+From: [Disable Windows PATH](https://stackoverflow.com/questions/51336147/how-to-remove-the-win10s-path-from-wsl)
+
+Add the following to the /etc/wsl.conf file:
+
+```conf
+  [interop]
+  enabled=false # enable launch of Windows binaries;
+  appendWindowsPath=false # append Windows path to $PATH variable;
+```
+
+### Install Useful Packages
 At this point, you can launch the new CentOS image as you would any other WSL instance. The installed CentOS is fairly bare, as it was designed for a container image. To make this closer to a default CentOS, you can query the list of base packages:
 
 ```shell
@@ -153,6 +168,7 @@ Of these, I installed a subset of packages. Here are a few recommended additiona
   - epel-release
 
 These can be installed with ```sudo dnf install <package-name>```.
+
 
 
 
