@@ -19,40 +19,49 @@ Run at your own risk.
 ## Installation
 
 * Clone the repo
-
-    git clone <repo>
-
+```shell
+    git clone https://github.com/kwanlowe/digitalhermit_website.git
+```
 * Change to base directory
-
+```shell
     cd digitalhermit_website/linux/fiduswriter
-
+```
 * Create base diretory
-
+```shell
     make create-dirs
-
+```
 * Initialize the installation
-
+```shell
     make init
-
+```
 * Edit the data/configuration.py as desired (See Fiduswriter docs)
-
+```shell
     vi data/configuration.py
-
+```
 * Create base installation
-
+```shell
     make setup
-
+```
 * Create SuperUser
-
+```shell
 	make console
     fiduswriter createsuperuser
     (Enter username and password as requested)
     exit    
-
+```
 * Run the server
-
+```shell
     make run
+```
+## Login and Usage
 
 * Open browser to http://localhost:8000
 
+* Sign-In (varies depending on configuration)
 
+* Note: If you didn't setup a mail server and using local auth, you'll need to view the
+  podman logs to get the login URL:
+
+```shell
+podman logs fiduswriter
+```
