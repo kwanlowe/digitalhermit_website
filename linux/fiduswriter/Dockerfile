@@ -6,9 +6,10 @@ RUN dnf install -y nodejs
 RUN npm install --global typescript@3.9.10
 RUN npm install --global --save-dev tap@15.0.9  
 RUN python3.9 -m pip install --upgrade pip wheel setuptools
-RUN pip install fiduswriter fiduswriter-books fiduswriter-ojs
-RUN mkdir fiduswriter && cd fiduswriter && fiduswriter createsuperuser
-RUN cd /usr/local/lib/python3.9/site-packages/fiduswriter/ && python3.9 manage.py migrate
+RUN mkdir fiduswriter && pip install fiduswriter fiduswriter-books fiduswriter-ojs
+# RUN mkdir fiduswriter
+RUN cd /u sr/local/lib/python3.9/site-packages/fiduswriter/ && python3.9 manage.py migrate
+RUN dnf clean all 
 ENTRYPOINT ["fiduswriter"]
 CMD ["runserver"]
 LABEL org.opencontainers.image.authors="kwan@digitalhermit.com"

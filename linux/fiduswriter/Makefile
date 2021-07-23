@@ -1,4 +1,5 @@
 VERSION=0.01
+IMAGE=quay.io/digitalhermit/fiduswriter-centos:latest
 
 build:
 	podman build -t fiduswriter-centos:$(VERSION) .
@@ -11,7 +12,7 @@ init:
 	  -v $(CURDIR)/data/:/fiduswriter:Z \
 	  --rm \
 	  --name fiduswriter-init \
-	  fiduswriter-centos startproject
+	  $(IMAGE) startproject
 
 setup:
 	podman run \
@@ -21,7 +22,7 @@ setup:
 	  -v $(CURDIR)/data/:/fiduswriter:Z \
 	  --rm \
 	  --name fiduswriter-setup \
-	  fiduswriter-centos setup
+	  $(IMAGE) setup
 
 run:
 	podman run -d \
@@ -31,7 +32,7 @@ run:
 	  -e SRC_PATH=/usr/local/lib/python3.9/site-packages/fiduswriter \
 	  -p 8000:8000 \
 	  --name fiduswriter \
-	  fiduswriter-centos
+	  $(IMAGE)
 
 
 
