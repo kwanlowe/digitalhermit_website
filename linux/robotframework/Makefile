@@ -8,6 +8,9 @@ docpath=/var/www/html/architecture/$(component)/Tests
 WEBPORT=18080
 .PHONY: test
 
+create-dirs:
+	mkdir -p data/Results
+
 test:
 	rm -rf Results/*
 	robot -d Results Tests/$(subcomponent).robot
@@ -15,7 +18,7 @@ test:
 build-docker:
 	podman build -t robotframework .
 
-docker-based-test:
+docker-based-test:	create-dirs
 	podman run \
 	  -v $(CURDIR)/data/Results:/Results:Z \
 	  -v $(CURDIR)/data/Tests:/Tests:Z \
