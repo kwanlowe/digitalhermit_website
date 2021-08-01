@@ -1,5 +1,6 @@
 VERSION=0.01
 IMAGE=quay.io/digitalhermit/fiduswriter-centos:latest
+SERVER_ADDRESS=fidus-server
 
 build:
 	podman build -t fiduswriter-centos:$(VERSION) .
