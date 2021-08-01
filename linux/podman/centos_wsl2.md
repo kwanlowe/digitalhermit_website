@@ -175,4 +175,13 @@ These can be installed with ```sudo dnf install <package-name>```.
 
 
 
+## Troubleshooting
+
+Occasionally Podman on WSL2 gets into a weird state where commands just don't work. 
+
+```shell
+    podman stop -a
+    podman rmi <image>
+    podman rmi -f <image>
+    podman system reset
 
