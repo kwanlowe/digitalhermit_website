@@ -1,4 +1,6 @@
 *** Settings ***
+Documentation     Example using the space separated format.
+Library           OperatingSystem
 Library    Selenium2Library
 
 Suite Teardown    Close All Browsers
