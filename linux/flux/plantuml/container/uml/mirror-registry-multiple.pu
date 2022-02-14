@@ -1,0 +1,66 @@
+@startuml
+
+!includeurl https://raw.githubusercontent.com/ebbypeter/Archimate-PlantUML/master/Archimate.puml
+
+!include legend.iuml
+!include title_style.iuml
+title Reference - Umbrella Corp Hive 
+
+scale 2.0
+
+Technology_Service( quay, "quay.io")
+Technology_Service( RedHatRegistry,  "registry.redhat.io")
+
+
+'Group( Norway, "Norway"){
+	Group( ClusterVLAN1,  "Terragrigia") {
+		Group( OCP_Cluster, "K8S Cluster A") {
+			collections WorkerNodes as "Worker Nodes"
+			collections ControlPlane as "Control Plane"
+		}
+        together {
+            Technology_Artifact(ContainerImages, "Container\nImages")
+            Technology_Artifact(OperatorImages, "Operator\nImages")
+        }
+		Technology_Node( RegistryMirror#LightBlue, "Registry Mirror")
+	}
+	Group( ClusterVLAN2,  "Holigrad") {
+		Group( OCP_Cluster2, "K8S Cluster B") {
+			collections WorkerNodes2 as "Worker Nodes"
+			collections ControlPlane2 as "Control Plane"
+		}
+        together {
+            Technology_Artifact(ContainerImages2, "Container\nImages")
+            Technology_Artifact(OperatorImages2, "Operator\nImages")
+        }
+		Technology_Node( RegistryMirror2#LightBlue, "Registry Mirror")
+	}
+'}
+
+Group( MiramarServerLan, "Raccoon City"){
+	Technology_Node( DeployHost#LightBlue, "Server RedQueen")
+    Technology_Node( StagingMirror#LightBlue, "Staging\nImage Repository")
+
+}
+
+Rel_Access_w(DeployHost, StagingMirror, "Populate Registry")
+Rel_Access_r(DeployHost, quay, "")
+Rel_Access_r(DeployHost, RedHatRegistry, "")
+
+' Cluster 1
+Rel_Access_w(StagingMirror, RegistryMirror, "Undersea Cable")
+Rel_Composition(RegistryMirror, ContainerImages, "")
+Rel_Composition(RegistryMirror, OperatorImages, "")
+Rel_Access_r(ControlPlane, RegistryMirror)
+Rel_Access_r(ControlPlane, WorkerNodes)
+
+
+' Cluster 2
+Rel_Access_w(StagingMirror, RegistryMirror2, "Satellite GRID Transfer")
+Rel_Composition(RegistryMirror2, ContainerImages2, "")
+Rel_Composition(RegistryMirror2, OperatorImages2, "")
+Rel_Access_r(ControlPlane2, RegistryMirror2)
+Rel_Access_r(ControlPlane2, WorkerNodes2)
+
+
+@enduml

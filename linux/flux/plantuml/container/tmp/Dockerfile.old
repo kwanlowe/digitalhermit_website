@@ -1,0 +1,16 @@
+FROM alpine
+RUN update-ca-trust && yum -y update ca-certificates
+RUN sed -ie 's/\(^gpgcheck =\).*/\1 0/' /etc/yum.conf
+RUN yum -y install jq openssl m4 bash-completion skopeo ncurses; yum clean all; 
+COPY bin/* /usr/bin/
+COPY cup-color-logo /etc/motd
+
+
+USER cup
+
+
+COPY bash_snippet /home/cup/.bash_custom 
+
+CMD [ "/sbin/init" ]
+
+
