@@ -1,0 +1,55 @@
+apiVersion: v1
+baseDomain: nowlab.tstsh.tstrccl.com
+compute:
+- architecture: amd64
+  hyperthreading: Enabled
+  architecture: amd64
+  name: worker
+  replicas: 3
+  platform:
+    vsphere:
+      cpus: 4
+      coresPerSocket: 2
+      memoryMB: 16384
+      osDisk:
+        diskSizeGB: 120
+controlPlane:
+  architecture: amd64
+  hyperthreading: Enabled
+  name: master
+  replicas: 3
+  platform:
+    vsphere:
+      cpus: 4
+      coresPerSocket: 2
+      memoryMB: 16384
+      osDisk:
+        diskSizeGB: 120
+metadata:
+  creationTimestamp: null
+  name: shipstg1-ocp
+networking:
+  clusterNetwork:
+  - cidr: 192.168.0.0/16
+    hostPrefix: 23
+  machineNetwork:
+  - cidr: 10.137.144.128/25
+  networkType: OpenShiftSDN
+  serviceNetwork:
+  - 172.30.0.0/16
+platform:
+  vsphere:
+    apiVIP: 10.137.144.132
+    cluster: Excalibur
+    datacenter: Shipboard Lab
+    defaultDatastore: vSphere_DS_20
+    folder: /Shipboard Lab/vm/Linux/OpenShift/shipstg1-ocp
+    ingressVIP: 10.137.144.131
+    network: STG-OCP_SRV_VLAN_680_(1680)
+    password: 
+    username: klowe@tstsh
+    vCenter: devshvc.tstsh.tstrccl.com
+publish: External
+pullSecret: ''
+sshKey: 'REDACTED'
+  

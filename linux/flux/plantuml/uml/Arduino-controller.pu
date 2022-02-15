@@ -1,0 +1,20 @@
+@startuml
+!include legend.iuml
+
+title "Flux Example - Sequence"
+
+LED_TEMP_GREEN -> LED_TEMP_YELLOW : PIN_01_WARN
+LED_TEMP_YELLOW -> LED_TEMP_RED : PIN_01_ALERT
+
+LED_TEMP_YELLOW -> LED_TEMP_GREEN: PIN_01_NORMAL
+LED_TEMP_RED -> LED_TEMP_GREEN: PIN_01_NORMAL
+
+LED_TEMP_RED -> LED_TEMP_RED: Power down hard?
+alt Destructive potential
+    LED_TEMP_RED -> Power_Down_Immediate : Initiate main cutoff
+else Non-Destructive potential
+    LED_TEMP_RED -> BELL_Sounding : Sound audible warning
+end
+
+
+@enduml

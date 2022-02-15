@@ -1,0 +1,29 @@
+@startyaml
+apiVersion: v1
+baseDomain: ocp-cluster-01.digitalhermit.com
+compute:
+- architecture: amd64
+  name: worker
+  replicas: 3
+  platform:
+    vsphere:
+      cpus: 4
+      coresPerSocket: 2
+      memoryMB: 16384
+      osDisk:
+        diskSizeGB: 120
+controlPlane:
+  architecture: amd64
+  hyperthreading: Enabled
+  name: master
+  replicas: 3
+networking:
+  clusterNetwork:
+  - cidr: 172.16.0.0/16
+    hostPrefix: 23
+  machineNetwork:
+  - cidr: 192.168.20.0/24
+  networkType: OpenShiftSDN
+  serviceNetwork:
+  - 172.30.0.0/16
+@endyaml

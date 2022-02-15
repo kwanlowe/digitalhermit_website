@@ -1,0 +1,8 @@
+legend right
+  Author: Flux Linux User Group
+  Project: PlantUML Demo
+  Git Repo: https://github.com/kwanlowe/digitalhermit
+  Filename: %filename()
+  Gen Date: %date()
+endlegend
+

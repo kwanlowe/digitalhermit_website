@@ -1,0 +1,11 @@
+@startuml
+
+!include style-blueprint.iuml
+[Sensor_Smoke] as "Smoke Sensor"
+[Sensor_Heat] as "Thermal Sensor"
+[Sensor_Smoke] -> [Monitor]
+[Sensor_Heat] -> [Monitor]
+
+[Monitor] --> [Monitor] : Self-Monitor
+
+@enduml
