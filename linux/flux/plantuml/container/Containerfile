@@ -1,0 +1,12 @@
+FROM dhrl-centos:stream-20220211
+
+RUN yum -y install virtualenv epel-release 
+RUN yum -y install java-latest-openjdk nodejs make graphviz
+RUN yum -y install wget
+RUN useradd -c "Flux" flux
+
+USER flux
+COPY storage/*  /home/flux
+RUN cd && make setup 
+
+

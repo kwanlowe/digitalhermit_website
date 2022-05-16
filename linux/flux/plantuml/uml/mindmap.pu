@@ -1,0 +1,15 @@
+@startmindmap
+* System Admin
+** Package Management
+*** yum/dnf
+*** apt
+*** snap
+*** flatpak
+** User Management
+*** LDAP
+**** OpenLDAP
+**** Active Directory
+*** Local Authentication
+*** OAUTH
+*** SSO
+@endmindmap

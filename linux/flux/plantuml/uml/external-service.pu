@@ -1,0 +1,22 @@
+@startuml
+
+scale 1.5
+skinparam linetype ortho
+!include legend.iuml
+!include title_style.iuml
+title Reference - External Service
+
+package "Reference App" {
+  [FrontEnd] -right-> [BackEnd]
+  [BackEnd] -right-> [DBService]
+  [DBService] -down-> [Endpoint]
+  [Endpoint] -right-> EgressIP
+  note right: Static IP defined for FW purposes
+}
+
+package "Couch DB" {
+  [CouchDB] -up-> ExternalIPs
+}
+
+EgressIP -down-> ExternalIPs
+@enduml

@@ -1,0 +1,36 @@
+@startuml
+
+@startuml
+
+!includeurl https://raw.githubusercontent.com/ebbypeter/Archimate-PlantUML/master/Archimate.puml
+!include legend.iuml
+!include title_style.iuml
+title Quay Architecture - Quay with S3/DB Node
+
+Technology_Service(S3, "AWS S3")
+
+Grouping(QuayCluster,"Quay Cluster"){
+    Technology_Node(Quay1#LightBlue, "Quay/Redis 1")
+    Technology_Node(Quay2#LightBlue, "Quay/Redis 2")
+    Technology_Node(Quay3#LightBlue, "Quay/Redis 3")
+    Technology_Node(PGSQL#LightCoral, "Postgres DB")
+    Technology_Service(QuayService, "Quay Service")
+}
+
+
+Rel_Realization(Quay1, QuayService, "Realizes")
+Rel_Realization(Quay2, QuayService, "Realizes")
+Rel_Realization(Quay3, QuayService, "Realizes")
+
+Rel_Access(Quay1, PGSQL, "SQL")
+Rel_Access(Quay2, PGSQL, "SQL")
+Rel_Access(Quay3, PGSQL, "SQL")
+
+Rel_Access(QuayService, S3, "Image\nStorage")
+
+Quay1 -[hidden]up-> PGSQL
+Quay2 -[hidden]up-> PGSQL
+Quay3 -[hidden]up-> PGSQL
+
+
+@enduml

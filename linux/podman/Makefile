@@ -10,11 +10,10 @@ WEBPORT=18080
 .PHONY: test
 
 create-dirs:
-	mkdir -p data/Results data/Tests
+	mkdir -p data/robot/Results data/robot/Tests
 
-test:
-	rm -rf Results/*
-	robot -d Results Tests/$(subcomponent).robot
+hello-world:
+	podman run hello-world
 
 build-container:
 	podman build -t robotframework .
@@ -28,14 +27,6 @@ create-robot-pod:
 	  -p 4442:4442 \
 	  -p 4443:4443 \
 
-run-robot-test:	create-dirs
-	podman run \
-	  -v $(CURDIR)/data/robot/Results:/Results:Z \
-	  -v $(CURDIR)/data/robot/Tests:/Tests:Z \
-	  --pod $(podname) \
-	  --label=disable \
-	  robotframework
-
 run-chrome-container:
 	podman run \
 	  -d \
@@ -46,6 +37,14 @@ run-chrome-container:
 	  --name standalone-chrome \
 	  selenium/standalone-chrome:latest
 
+run-robot-test:	create-dirs
+	podman run \
+	  -v $(CURDIR)/data/robot/Results:/Results:Z \
+	  -v $(CURDIR)/data/robot/Tests:/Tests:Z \
+	  --pod $(podname) \
+	  --label=disable \
+	  robotframework
+
 run-firefox-container:
 	podman run \
 	  -d \
@@ -55,14 +54,6 @@ run-firefox-container:
 	  -v /dev/shm:/dev/shm \
 	  --name standalone-firefox \
 	  selenium/standalone-firefox:latest
-
-
-push:
-	PATH=/usr/bin:~/bin/Archi:$$PATH \
-	rsync -rvv -a Results \
-	    --delete \
-	    --rsync-path="mkdir -p $(docpath)/$(component)/$(subcomponent) && rsync" \
-	    $(username)@$(webhost):$(docpath)/$(component)/$(subcomponent)
 
 run-apache:
 	podman run \
@@ -80,8 +71,18 @@ run-fgallery:
 	  -e "GALLERY_TITLE=FLUX Demo" \
 	  alterway/docker-image-gallery
 
+create-secret:
+	echo "FluxDemo"|podman secret create fluxdemo-secret -
+
+run-multitool:
+	podman run \
+	  --secret fluxdemo-secret \
+	  --detach \
+	  --name multitool \
+	  praqma/network-multitool
+
+attach-multitool:
+	podman exec -it multitool /bin/ash
+
 web-server:
 	cd $(CURDIR)/data/robot/Results && python3 -m http.server $(WEBPORT)
-
-install-chromedriver:
-	./install_chromedriver

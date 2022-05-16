@@ -1,0 +1,17 @@
+@startuml
+!include legend.iuml
+
+title "Flux Example - Sequence"
+
+== Client Sequence ==
+actor "Browser/Client" as OCPCLient
+
+Client -> LocalDNS: Resolve rcg-cup.net
+LocalDNS -> Client: Delegate to AWS Route53
+Client -> AWSRoute53: Resolve rcg-cup.net
+AWSRoute53 -> Client: Delegation
+Client -> RCLHostedZoneDNS: Query 
+RCLHostedZoneDNS -> Client: Return A Record
+
+
+@enduml
