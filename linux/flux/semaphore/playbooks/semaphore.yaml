@@ -1,0 +1,73 @@
+---
+- name: Restart Mirror Registry on failure
+  hosts: podman-hosts
+  vars: 
+    SEMAPHORE_DB_USER: "semaphore"
+    SEMAPHORE_DB_PASSWORD: "FluxSemaphoreDemo"
+    SEMAPHORE_DB_STORAGE_PATH: "/home/kwan/semaphore/db"
+    SEMAPHORE_STORAGE_PATH: "/home/kwan/semaphore/semaphore"
+    SEMAPHORE_ACCESS_KEY: "oiA5B/ubIay87uAJbX6F2QxP/5lW1KX1ak48YXFsKDs="
+    ANSIBLE_STORAGE: "/mnt/files"
+
+
+  tasks:
+    - name: Create directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: 0775
+      loop:
+        - "{{ SEMAPHORE_DB_STORAGE_PATH }}"
+        - "{{ SEMAPHORE_STORAGE_PATH }}"
+
+    - name: Create pod
+      containers.podman.podman_pod:
+        name: semaphore-pod
+        state: started
+        ports:
+          - "3306:3306"
+          - "3000:3000"
+
+    - name: Start MySQL
+      containers.podman.podman_container:
+        name: mysql-semaphore
+        pod: semaphore-pod
+        image: mysql:5.6
+        state: started
+        force_restart: no
+        rm: yes
+        recreate: no
+        restart_policy: "no"
+        volume:
+          - "{{ SEMAPHORE_DB_STORAGE_PATH }}:/var/lib/registry:Z"
+        env:
+          MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+          MYSQL_DATABASE: "semaphore"
+          MYSQL_USER: "semaphore"
+          MYSQL_PASSWORD: "{{ SEMAPHORE_DB_PASSWORD }}"
+
+    - name: Start Semaphore
+      containers.podman.podman_container:
+        name: semaphore
+        pod: semaphore-pod
+        image: semaphoreui/semaphore:v2.8.65
+        state: started
+        force_restart: no
+        rm: yes
+        recreate: no
+        restart_policy: "no"
+        volume:
+          - "{{ SEMAPHORE_STORAGE_PATH }}:/opt/data/semaphore:Z"
+          - "{{ ANSIBLE_STORAGE }}:/mnt/files:Z"
+        env:
+          SEMAPHORE_DB_USER: "{{ SEMAPHORE_DB_USER }}"
+          SEMAPHORE_DB_PASS: "{{ SEMAPHORE_DB_PASSWORD }}"
+          SEMAPHORE_DB_HOST: "localhost"
+          SEMAPHORE_DB_PORT: "3306"
+          SEMAPHORE_DB: "semaphore"
+          SEMAPHORE_PLAYBOOK_PATH: "/tmp/semaphore/"
+          SEMAPHORE_ADMIN_PASSWORD: "semaphore"
+          SEMAPHORE_ADMIN_NAME: "admin"
+          SEMAPHORE_ADMIN_EMAIL: "admin@localhost"
+          SEMAPHORE_ADMIN: "admin"
+          SEMAPHORE_ACCESS_KEY_ENCRYPTION: "{{ SEMAPHORE_ACCESS_KEY }}"

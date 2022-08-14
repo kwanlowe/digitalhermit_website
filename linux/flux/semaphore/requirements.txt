@@ -1,0 +1,6 @@
+ansible
+PyVmomi
+ruamel.yaml
+jinja2
+kubernetes
+hvac
