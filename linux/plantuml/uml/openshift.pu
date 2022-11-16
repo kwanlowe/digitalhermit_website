@@ -29,7 +29,7 @@ package "Deploy Network" {
 
 
 package "github" {
-    Cloud_Storage(kubespray_git, "Kubespray git repo", "github.com")
+    Cloud_Storage(kubespray_git, "Architecture git repo", "github.com")
 }
 
 
