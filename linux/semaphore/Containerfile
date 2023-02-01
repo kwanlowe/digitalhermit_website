@@ -1,0 +1,6 @@
+FROM semaphoreui/semaphore
+user root
+RUN /sbin/apk add py3-pip
+user semaphore
+RUN pip install kubernetes hvac
+
