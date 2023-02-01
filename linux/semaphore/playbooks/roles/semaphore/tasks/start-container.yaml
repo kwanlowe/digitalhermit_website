@@ -1,0 +1,88 @@
+---
+
+- name: Create Pod
+  containers.podman.podman_pod:
+    name: semaphore-pod
+    state: started
+    ports:
+      - "{{ semaphore_mysql_published_port }}:{{ semaphore_mysql_container_port }}"
+      - "{{ semaphore_published_port }}:{{ semaphore_container_port }}"
+      - "{{ semaphore_nginx_published_port }}:{{ semaphore_nginx_container_port }}"
+  become: true
+  become_user: "{{ semaphore_user }}"
+ 
+- name: Start MySQL Container
+  containers.podman.podman_container:
+    name: semaphore-mysql
+    image: "docker.io/library/mysql:{{ semaphore_mysql_version }}"
+    state: started
+    cap_add: IPC_LOCK
+    force_restart: no
+    pod: semaphore-pod
+    rm: no
+    recreate: no
+    restart_policy: "no"
+    security_opt: "label=disable"
+    volume:
+      - "{{ application_dir }}/data/mysql:/var/lib/mysql:Z"
+    env:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: "semaphore"
+      MYSQL_USER: "{{ semaphore_db_user }}"
+      MYSQL_PASSWORD: "{{ semaphore_db_pass }}"
+  become: true
+  become_user: "{{ semaphore_user }}"
+ 
+- name: Start Semaphore container
+  containers.podman.podman_container:
+    name: semaphore
+    image: "docker.io/semaphoreui/semaphore:{{ semaphore_version }}"
+    state: started
+    cap_add: IPC_LOCK
+    force_restart: no
+    pod: semaphore-pod
+    rm: no
+    recreate: no
+    restart_policy: "no"
+    security_opt: "label=disable"
+    volume:
+      - "{{ application_dir }}/data/semaphore:/opt/data/semaphore:Z"
+      - "{{ application_dir }}/files:/mnt/files:Z"
+    env:
+      VAULT_LOG_LEVEL: "debug"
+      SEMAPHORE_DB_USER: "{{ semaphore_db_user }}"
+      SEMAPHORE_DB_PASS: "{{ semaphore_db_pass }}"
+      SEMAPHORE_DB_HOST: localhost
+      SEMAPHORE_DB_PORT: 3306
+      SEMAPHORE_DB: semaphore
+      SEMAPHORE_DB_DIALECT: mysql
+      SEMAPHORE_DB: semaphore 
+      SEMAPHORE_PLAYBOOK_PATH: /tmp/semaphore/
+      SEMAPHORE_ADMIN_PASSWORD: semaphore
+      SEMAPHORE_ADMIN_NAME: admin
+      SEMAPHORE_ADMIN_EMAIL: admin@localhost
+      SEMAPHORE_ADMIN: admin
+      SEMAPHORE_ACCESS_KEY_ENCRYPTION: "{{ semaphore_access_key_encryption }}"
+  become: true
+  become_user: "{{ semaphore_user }}"
+ 
+
+- name: Start nginx proxy container
+  containers.podman.podman_container:
+    name: semaphore-nginx
+    image: docker.io/library/nginx:{{ semaphore_nginx_version }}
+    state: started
+    cap_add: IPC_LOCK
+    force_restart: no
+    pod: semaphore-pod
+    rm: no
+    recreate: no
+    restart_policy: "no"
+    security_opt: "label=disable"
+    volume:
+      - "{{ application_dir }}/data/nginx/config/config.json:/etc/nginx/conf.d/proxy.conf:Z"
+      - "{{ application_dir }}/data/nginx/config/{{ server_hostname }}.pem:/etc/nginx/cert/{{ server_hostname }}.pem:Z"
+      - "{{ application_dir }}/data/nginx/config/{{ server_hostname }}.key:/etc/nginx/cert/{{ server_hostname }}.key:Z"
+  become: true
+  become_user: "{{ semaphore_user }}"
+ 

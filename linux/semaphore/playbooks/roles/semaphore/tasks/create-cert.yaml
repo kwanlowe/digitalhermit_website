@@ -1,0 +1,59 @@
+- name: Create certificate configuration
+  ansible.builtin.template:
+    src: cert.conf.j2
+    dest: "{{ application_dir }}/data/nginx/config/cert.conf"
+    owner: "{{ semaphore_user }}"
+    group: "{{ semaphore_user }}"
+    mode: '0600'
+  become: true
+
+
+- name: Generate an OpenSSL private key with a different size (2048 bits)
+  community.crypto.openssl_privatekey:
+    path: "{{ application_dir }}/data/nginx/config/{{ server_hostname }}.key"
+    size: 2048
+  become: true
+
+- name: Generate an OpenSSL Certificate Signing Request with Subject information
+  community.crypto.openssl_csr:
+    path: "{{ application_dir }}/data/nginx/config/{{ server_hostname }}.csr"
+    privatekey_path: "{{ application_dir }}/data/nginx/config/{{ server_hostname }}.key"
+    country_name: "{{ cert_country }}"
+    organization_name: "{{ cert_organization }}"
+    organizational_unit_name: "{{ cert_organization_unit }}"
+    common_name: "{{ server_hostname }}"
+    subject_alt_name: "{{ item.value | map('regex_replace', '^', 'IP:') | list }}"
+  with_dict:
+    ips:
+    - "{{ ansible_default_ipv4.address }}"
+  become: true
+
+- name: Generate a Self Signed OpenSSL certificate
+  community.crypto.x509_certificate:
+    path: "{{ application_dir }}/data/nginx/config/{{ server_hostname }}.pem"
+    privatekey_path: "{{ application_dir }}/data/nginx/config/{{ server_hostname }}.key"
+    csr_path: "{{ application_dir }}/data/nginx/config/{{ server_hostname }}.csr"
+    provider: selfsigned
+  become: true
+
+- name: Fix permissions
+  file: 
+    path: "{{ item }}"
+    owner: "{{ semaphore_user }}"
+    group: "{{ semaphore_user }}"
+  with_items:
+    - "{{ application_dir }}/data/nginx/config/{{ server_hostname }}.pem"
+    - "{{ application_dir }}/data/nginx/config/{{ server_hostname }}.csr"
+    - "{{ application_dir }}/data/nginx/config/{{ server_hostname }}.key"
+  become: true
+
+- name: Create nginx configuration
+  ansible.builtin.template:
+    src: config.json_j2
+    dest: "{{ application_dir }}/data/nginx/config/config.json"
+    owner: "{{ semaphore_user }}"
+    group: "{{ semaphore_user }}"
+    mode: '0600'
+  become: true
+
+

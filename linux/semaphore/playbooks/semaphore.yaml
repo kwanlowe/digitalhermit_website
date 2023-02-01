@@ -1,0 +1,10 @@
+---
+
+- name: Start Semaphore
+  hosts: "{{ var_host | default('semaphore_dev')}}"
+ 
+  tasks:
+    - name: Ansible Semaphore
+      include_role:
+        name: semaphore
+

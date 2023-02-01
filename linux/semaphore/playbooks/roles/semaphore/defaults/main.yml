@@ -1,0 +1,38 @@
+---
+semaphore_user: deploy
+semaphore_version: v2.8.65
+semaphore_nginx_version: "latest"
+semaphore_mysql_version: "8.0.32"
+
+semaphore_mysql_container_port: 3306
+semaphore_mysql_published_port: 3306
+semaphore_container_port: 3000
+semaphore_published_port: 3000
+semaphore_nginx_container_port: 8443
+semaphore_nginx_published_port: 8443
+
+application_dir: "/home/{{ semaphore_user }}/applications/semaphore"
+
+semaphore_db_user: "semaphore"
+semaphore_db_pass: "semaphore"
+
+semaphore_admin_password: "semaphore"
+semaphore_admin_name: "admin"
+semaphore_admin_email: "admin@localhost"
+semaphore_admin: admin
+
+# Generate the following with: head -c32 /dev/urandom | base64
+semaphore_access_key_encryption: "+ReplaceMeWithASuperSecretEncryptionKeyxxxx="
+
+# Options: Venafi, OpenSSL (self-signed)
+certificate_type: "OpenSSL"
+server_hostname: "{{ ansible_nodename }}"
+server_ip_address: "{{ ansible_default_ipv4.address }}"
+
+cert_country: "US"
+cert_state: "FL"
+cert_locality: "Xanth"
+cert_organization: "Digital Hermit Research Labs"
+cert_organization_unit: "Research and Development"
+cert_common_name: "{{ ansible_nodename }}"
+

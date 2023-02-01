@@ -1,0 +1,26 @@
+# vim: syntax=cfg
+[req]
+default_bits = 4096
+default_md = sha256
+distinguished_name = req_distinguished_name
+x509_extensions = server
+prompt = no
+
+[req_distinguished_name]
+C = {{ cert_country }}
+ST = {{ cert_state }}
+L = {{ cert_locality }}
+O = {{ cert_organization }}
+OU = {{ cert_organization_unit }}
+CN = {{ server_hostname }}
+
+[server]
+basicConstraints = CA:TRUE
+keyUsage = digitalSignature, keyEncipherment, dataEncipherment
+extendedKeyUsage = serverAuth
+nsCertType = server
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = {{ server_hostname }}
+IP.1 = {{ server_ip_address }}

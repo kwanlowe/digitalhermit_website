@@ -1,0 +1,15 @@
+- name: Start firewalld service
+  ansible.builtin.systemd:
+    state: started
+    name: firewalld
+
+- name: Allow traffic on through firewall
+  ansible.posix.firewalld:
+    port: "{{ item }}"
+    permanent: yes
+    immediate: yes
+    state: enabled
+  with_items:
+    - "{{ semaphore_container_port }}/tcp"
+    - "{{ semaphore_published_port }}/tcp"
+    - "{{ semaphore_nginx_published_port }}/tcp"

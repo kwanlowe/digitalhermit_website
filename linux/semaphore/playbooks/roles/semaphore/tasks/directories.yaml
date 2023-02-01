@@ -1,0 +1,19 @@
+---
+
+- name: Create remote directory structure
+  ansible.builtin.file:
+    path: "{{ application_dir }}/{{ item }}"
+    state: directory
+    mode: '0775'
+    owner: "{{ semaphore_user }}"
+    group: "{{ semaphore_user }}"
+    setype: "container_file_t"
+  loop:
+    - data
+    - data/mysql
+    - data/semaphore
+    - data/nginx
+    - data/nginx/config
+    - files
+  become: true
+

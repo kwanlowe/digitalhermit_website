@@ -1,0 +1,12 @@
+---
+- name: Install dependencies
+  ansible.builtin.dnf:
+    name:
+      - podman
+      - m4
+      - make
+      - bash-completion
+      - python3-cryptography
+      - jq
+    state: latest
+  become: true

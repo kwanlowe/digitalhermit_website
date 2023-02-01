@@ -1,0 +1,28 @@
+---
+# tasks file for Vault
+
+- name: Configure user
+  include: users.yml
+  become: true
+
+- name: Create directory structure
+  include: directories.yaml
+  become: true
+
+- name: Install package dependencies
+  include: tasks/packages.yaml
+  become: true
+
+- name: Setup nginx certificates
+  include: tasks/create-cert.yaml
+  become_user: "{{ semaphore_user }}"
+
+- name: Start MySQL and Semaphore Containers
+  include: tasks/start-container.yaml
+  become_user: "{{ semaphore_user }}"
+
+- name: Allow traffic through host firewall
+  include: tasks/firewall.yaml
+  become: true
+
+

@@ -1,0 +1,15 @@
+---
+- name: Add semaphore user
+  ansible.builtin.user:
+    name: "{{ semaphore_user }}"
+    comment: Ansible semaphore Service Account
+  become: true
+
+- name: Check if user is lingering
+  stat:
+    path: "/var/lib/systemd/linger/{{ semaphore_user }}"
+  register: user_lingering
+
+- name: Enable lingering is needed
+  command: "loginctl enable-linger {{ semaphore_user }}"
+  when: not user_lingering.stat.exists
