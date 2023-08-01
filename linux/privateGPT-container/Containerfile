@@ -1,0 +1,36 @@
+FROM docker.io/redhat/ubi9:latest
+
+COPY files/certs/*  /etc/pki/ca-trust/source/anchors/
+COPY requirements.txt requirements.txt
+# COPY req1.txt req1.txt
+# COPY req2.txt req2.txt
+RUN update-ca-trust
+COPY files/privateGPT-logo /etc/motd
+ENV PATH="$PATH:/opt/rh/gcc-toolset-12/root/usr/bin/"
+
+# RUN yum check-update
+RUN yum install -y gcc-toolset-12-gcc 
+RUN yum install -y cmake gcc gcc-c++ gcc-toolset-12-gcc gcc-toolset-12-gcc-c++ libffi-devel python3 epel-release; \
+    yum install -y python3-pip ; \
+    yum install -y python3-devel ; \
+    yum install -y gcc-toolset-12-gcc-c++ ; \
+    yum install -y wget rsync git bash-completion ncurses; \
+    yum clean all; 
+
+RUN gcc --version
+RUN pip3 install virtualenv; \
+    virtualenv /root/bin/py_venv; \
+    /root/bin/py_venv/bin/pip3 config set global.trusted-host "pypi.org files.pythonhosted.org pypi.python.org" 
+
+# Separating these to separate layers during build troubleshooting
+
+RUN /root/bin/py_venv/bin/pip3 install --upgrade pip 
+
+RUN /root/bin/py_venv/bin/pip3 install --upgrade virtualenv 
+
+RUN /root/bin/py_venv/bin/pip3 install -r requirements.txt 
+# RUN /root/bin/py_venv/bin/pip3 install -r req1.txt 
+# RUN /root/bin/py_venv/bin/pip3 install -r req2.txt 
+
+COPY files/home/. /root
+CMD ["/sbin/init"]
