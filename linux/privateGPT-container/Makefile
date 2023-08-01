@@ -20,5 +20,6 @@ pull:
 .ONESHELL:
 run:
 	@podman run \
+		-v $(CURDIR)/models:/root/models:Z \
 		-it $(APPNAME):$(VERSION) \
 		/bin/bash
