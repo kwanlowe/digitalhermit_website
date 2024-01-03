@@ -7,10 +7,16 @@ import (
 	"os"
 	"log"
  	"fmt"
+	"flag"
 )
 
 func main() {
-	pathToImage1 := "images/crowd1.png"	
+	var pathToImage1 string
+	flag.StringVar(&pathToImage1, "i", "image1.jpg", "Image location")
+	//pathToImage1 := "images/crowd1.png"	
+	flag.Parse()
+
+
 	ctx := context.Background()
 	// Access your API key as an environment variable (see "Set up your API key" above)
 	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("API_KEY")))
