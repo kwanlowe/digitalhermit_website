@@ -30,7 +30,7 @@ func main() {
 	  log.Fatal(err)
 	}
 	defer client.Close()
-	
+
 	// For text-only input, use the gemini-pro model
 	model := client.GenerativeModel("gemini-pro")
 	// Initialize the chat
@@ -38,7 +38,9 @@ func main() {
 	cs.History = []*genai.Content{
 	  &genai.Content{
 	    Parts: []genai.Part{
-	      genai.Text("Hello."),
+	      genai.Text("Create a Golang function based on the input."),
+	      genai.Text("Add informative comments to the code."),
+	      genai.Text("Return only the Golang code."),
 	    },
 	    Role: "user",
 	  },
@@ -49,7 +51,7 @@ func main() {
 	    Role: "model",
 	  },
 	}
-	
+
 	for {
 		fmt.Print(userPrompt)
 		prompt, _ := reader.ReadString('\n')
@@ -63,21 +65,10 @@ func main() {
 }
 
 func printResponse(resp *genai.GenerateContentResponse) {
-	var output string
-	var formattedText, geminiPrompt string
-	geminiPrompt = text.FgRed.Sprint("Gemini:")
-
-	for _, cand := range resp.Candidates {
-		if cand.Content != nil {
-			for _, part := range cand.Content.Parts {
-				output = fmt.Sprint(part)
-				formattedText = text.WrapSoft(output, 80)
-				for _, line := range strings.Split(formattedText, "\n") {
-					// fmt.Printf("Gemini: %s\n", line)
-					fmt.Printf("%s %s\n",geminiPrompt, line)
-				}
-			}
-		}
-	}
-	fmt.Println("---")
+        for _, cand := range resp.Candidates {
+                for _, part := range cand.Content.Parts {
+                        fmt.Println(part)
+                }
+        }
+        fmt.Println("---")
 }

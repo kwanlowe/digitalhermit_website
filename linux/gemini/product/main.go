@@ -30,7 +30,7 @@ func main() {
 	  log.Fatal(err)
 	}
 	defer client.Close()
-	
+
 	// For text-only input, use the gemini-pro model
 	model := client.GenerativeModel("gemini-pro")
 	// Initialize the chat
@@ -38,7 +38,9 @@ func main() {
 	cs.History = []*genai.Content{
 	  &genai.Content{
 	    Parts: []genai.Part{
-	      genai.Text("Hello."),
+	      genai.Text("You are a product manager targeting a Gen-Z audience."),
+	      genai.Text("Create exciting advertising copy for products and their simple description."),
+	      genai.Text("Keep copy under a few sentences long."),
 	    },
 	    Role: "user",
 	  },
@@ -49,7 +51,7 @@ func main() {
 	    Role: "model",
 	  },
 	}
-	
+
 	for {
 		fmt.Print(userPrompt)
 		prompt, _ := reader.ReadString('\n')
@@ -65,7 +67,7 @@ func main() {
 func printResponse(resp *genai.GenerateContentResponse) {
 	var output string
 	var formattedText, geminiPrompt string
-	geminiPrompt = text.FgRed.Sprint("Gemini:")
+	geminiPrompt = text.FgRed.Sprint("")
 
 	for _, cand := range resp.Candidates {
 		if cand.Content != nil {
