@@ -11,6 +11,7 @@ import (
 	"flag"
 	"bufio"
 	"strings"
+	"golang.org/x/term"
 )
 
 func main() {
@@ -25,6 +26,7 @@ func main() {
 
 	ctx := context.Background()
 	// Access your API key as an environment variable (see "Set up your API key" above)
+	
 	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("API_KEY")))
 	if err != nil {
 	  log.Fatal(err)
@@ -71,9 +73,10 @@ func printResponse(resp *genai.GenerateContentResponse) {
 		if cand.Content != nil {
 			for _, part := range cand.Content.Parts {
 				output = fmt.Sprint(part)
-				formattedText = text.WrapSoft(output, 80)
+				width, _, _ := term.GetSize(0) 
+				width = width - len(geminiPrompt)
+				formattedText = text.WrapSoft(output, width)
 				for _, line := range strings.Split(formattedText, "\n") {
-					// fmt.Printf("Gemini: %s\n", line)
 					fmt.Printf("%s %s\n",geminiPrompt, line)
 				}
 			}
