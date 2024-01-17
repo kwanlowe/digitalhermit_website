@@ -12,6 +12,7 @@ import (
 	"bufio"
 	"strings"
 	"golang.org/x/term"
+	"github.com/fatih/color"
 )
 
 func main() {
@@ -56,11 +57,13 @@ func main() {
 		fmt.Print(userPrompt)
 		prompt, _ := reader.ReadString('\n')
 		prompt = strings.ToValidUTF8(prompt, " ")
-		resp, err := cs.SendMessage(ctx, genai.Text(prompt))
-		if err != nil {
-		  log.Fatal(err)
+		if (len(prompt)) > 1 {
+			resp, err := cs.SendMessage(ctx, genai.Text(prompt))
+			if err != nil {
+			  	log.Fatal(err)
+			}
+			printResponse(resp)
 		}
-		printResponse(resp)
 	}
 }
 
@@ -77,7 +80,8 @@ func printResponse(resp *genai.GenerateContentResponse) {
 				width = width - len(geminiPrompt)
 				formattedText = text.WrapSoft(output, width)
 				for _, line := range strings.Split(formattedText, "\n") {
-					fmt.Printf("%s %s\n",geminiPrompt, line)
+					// fmt.Printf("%s %s\n",geminiPrompt, line)
+					color.Red(line)
 				}
 			}
 		}
