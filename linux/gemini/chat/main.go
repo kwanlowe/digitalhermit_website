@@ -78,7 +78,7 @@ func printResponse(resp *genai.GenerateContentResponse) {
 				output = fmt.Sprint(part)
 				width, _, _ := term.GetSize(0) 
 				width = width - len(geminiPrompt)
-				formattedText = text.WrapSoft(output, width)
+				formattedText = text.WrapText(output, width)
 				for _, line := range strings.Split(formattedText, "\n") {
 					// fmt.Printf("%s %s\n",geminiPrompt, line)
 					color.Red(line)
