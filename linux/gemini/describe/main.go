@@ -25,7 +25,7 @@ func main() {
 	defer client.Close()
 	
 	// For text-and-image input (multimodal), use the gemini-pro-vision model
-	model := client.GenerativeModel("gemini-pro-vision")
+	model := client.GenerativeModel("gemini-1.5-flash")
 	
 	imgData1, err := os.ReadFile(pathToImage1)
 	if err != nil {
