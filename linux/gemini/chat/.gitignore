@@ -1,0 +1,6 @@
+*.swp
+gemini
+gemini-chat
+go.mod
+go.sum
+
