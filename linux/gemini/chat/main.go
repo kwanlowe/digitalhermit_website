@@ -13,17 +13,25 @@ import (
 	"strings"
 	"golang.org/x/term"
 	"github.com/fatih/color"
+
+	"gemini-chat/library"
+)
+const (
+	appname string = "gemini-chat"
 )
 
 func main() {
-	var pathToImage1 string
+	var pathToImage1, configFile string
 	reader := bufio.NewReader(os.Stdin)
 	userPrompt := text.FgBlue.Sprint("Prompt: ")
 
+	flag.StringVar(&configFile, "c", "config", "Configuration File")
 	flag.StringVar(&pathToImage1, "i", "image1.jpg", "Image location")
-	//pathToImage1 := "images/crowd1.png"	
 	flag.Parse()
 
+	config, _ := readConfig.LoadConfig(configFile, appname)
+
+	modelType := config.GetString("gemini.model")
 
 	ctx := context.Background()
 	// Access your API key as an environment variable (see "Set up your API key" above)
@@ -35,7 +43,7 @@ func main() {
 	defer client.Close()
 	
 	// For text-only input, use the gemini-pro model
-	model := client.GenerativeModel("gemini-pro")
+	model := client.GenerativeModel(modelType)
 	// Initialize the chat
 	cs := model.StartChat()
 	cs.History = []*genai.Content{
