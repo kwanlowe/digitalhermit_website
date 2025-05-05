@@ -13,7 +13,7 @@ import (
 	"strings"
 	"golang.org/x/term"
 	"github.com/fatih/color"
-
+	markdown "github.com/MichaelMure/go-term-markdown"
 	"gemini-chat/library"
 )
 const (
@@ -77,7 +77,7 @@ func main() {
 
 func printResponse(resp *genai.GenerateContentResponse) {
 	var output string
-	var formattedText, geminiPrompt string
+	var markdownText, geminiPrompt string
 	geminiPrompt = text.FgRed.Sprint("Gemini:")
 
 	for _, cand := range resp.Candidates {
@@ -86,10 +86,9 @@ func printResponse(resp *genai.GenerateContentResponse) {
 				output = fmt.Sprint(part)
 				width, _, _ := term.GetSize(0) 
 				width = width - len(geminiPrompt)
-				formattedText = text.WrapText(output, width)
-				for _, line := range strings.Split(formattedText, "\n") {
-					// fmt.Printf("%s %s\n",geminiPrompt, line)
-					color.Red(line)
+				markdownText = string(markdown.Render(output, width, 6))
+				for _, line := range strings.Split(markdownText, "\n") {
+					color.Blue(line)
 				}
 			}
 		}
