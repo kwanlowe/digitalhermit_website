@@ -9,20 +9,54 @@ import (
 	"log"
  	"fmt"
 	"flag"
-	"bufio"
+	// "bufio"
+	"sort"
 	"strings"
 	"golang.org/x/term"
 	"github.com/fatih/color"
 	markdown "github.com/MichaelMure/go-term-markdown"
 	"gemini-chat/library"
+	"github.com/petermattis/prompt"
 )
 const (
 	appname string = "gemini-chat"
 )
 
+var geminiKeywords = []string{
+        "QUIT",
+        "EXPLAIN",
+        "TRANSLATE",
+}
+
+func init() {
+        sort.Strings(geminiKeywords)
+}
+
+
+func inputFinished(text string) bool {
+        text = strings.TrimSpace(text)
+        return strings.HasSuffix(text, ";")
+}
+
+func completer(text []rune, wordStart, wordEnd int) []string {
+        word := strings.ToUpper(string(text[wordStart:wordEnd]))
+        i := sort.Search(len(geminiKeywords), func(i int) bool {
+                return geminiKeywords[i] >= word
+        })
+        if i >= len(geminiKeywords) {
+                return nil
+        }
+        word += "\xff"
+        j := sort.Search(len(geminiKeywords), func(i int) bool {
+                return geminiKeywords[i] >= word
+        })
+        return geminiKeywords[i:j]
+}
+
+
 func main() {
 	var pathToImage1, configFile string
-	reader := bufio.NewReader(os.Stdin)
+	// reader := bufio.NewReader(os.Stdin)
 	userPrompt := text.FgBlue.Sprint("Prompt: ")
 
 	flag.StringVar(&configFile, "c", "config", "Configuration File")
@@ -63,10 +97,25 @@ func main() {
 	
 	for {
 		fmt.Print(userPrompt)
-		prompt, _ := reader.ReadString('\n')
-		prompt = strings.ToValidUTF8(prompt, " ")
-		if (len(prompt)) > 1 {
-			resp, err := cs.SendMessage(ctx, genai.Text(prompt))
+
+	 	p, err := prompt.New(
+                	prompt.WithCompleter(completer),
+                	prompt.WithHistory(os.ExpandEnv("${HOME}/.gemini-chat_history"), -1),
+                	prompt.WithInputFinished(inputFinished))
+
+		if err != nil {
+			log.Fatal(err)
+		}
+        
+		// geminiPrompt, _ := reader.ReadString('\n')
+		geminiPrompt, err := p.ReadLine("gemini> ")
+		if err != nil {
+			log.Fatal(err)
+		}	
+
+		geminiPrompt = strings.ToValidUTF8(geminiPrompt, " ")
+		if (len(geminiPrompt)) > 1 {
+			resp, err := cs.SendMessage(ctx, genai.Text(geminiPrompt))
 			if err != nil {
 			  	log.Fatal(err)
 			}
